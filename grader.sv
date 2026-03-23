@@ -164,6 +164,7 @@ endmodule: Grader
 module Grader_woFSM
   (input logic [11:0] Guess,
    input logic GradeIt, CLOCK100, reset,
+   input R_en, R_clear;
    output logic [3:0] Zood, Znarly);
 
   logic [11:0] MasterPattern;
