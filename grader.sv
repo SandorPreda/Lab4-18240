@@ -163,8 +163,9 @@ endmodule: Grader
 
 module Grader_woFSM
   (input logic [11:0] Guess,
-   input logic GradeIt, CLOCK100, reset,
-   input R_en, R_clear;
+   input logic CLOCK100, reset,
+   input logic R_en, R_clear,
+   input logic [11:0] MasterPattern,
    output logic [3:0] Zood, Znarly);
 
   logic [11:0] MasterPattern;
@@ -189,12 +190,8 @@ module Grader_woFSM
     COMPUTE = 1
   } currState, nextState;
 
-  // Assign the shapes
-  assign firstShape = T; 
-  assign secondShape = T;
-  assign thirdShape = D;
-  assign fourthShape = O;
-  assign MasterPattern = {firstShape, secondShape, thirdShape, fourthShape}; 
+  // Assign the master to each shape
+  assign {firstShape, secondShape, thirdShape, fourthShape} = MasterPattern; 
 
   // Instantiate registers and register logic
   logic [2:0] R1_out, R2_out, R3_out, R4_outgt;

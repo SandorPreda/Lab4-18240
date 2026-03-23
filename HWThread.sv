@@ -18,6 +18,51 @@ module system_FSM (
     input logic GradeIt, GameWon,
     input logic CoinInserted);
 
+    enum logic [2:0] {WAIT, INSERTED, ENTERED, START, GRADING} 
+                      currState, nextState;
+
+    // Sequential logic for State Transition and Ouputs
+    always_comb begin
+
+      //transition keeper
+      nextState = currState;
+      
+      //output keeper
+      add_or_sub = 1'b0;
+      cv_en = 1'b0;
+      cv_cl = 1'b0;
+      tc_en = 1'b0;
+      another_round = 1'b0;
+      shape_reset = 1'b0;
+      R_en_grader = 1'b0;
+      R_clear_grader = 1'b1;
+
+      case (currState)
+        WAIT: begin
+
+          if (CoinInserted) begin
+            nextState = INSERTED;
+            cv_en = 1'b1;
+            add_or_sub = 1'b1;
+          end
+
+          else if (startgame_real) begin
+            nextState = ENTERED;
+            add_or_sub = 1'b0;
+            tc_en = 1'b1;
+          end
+        end
+        
+      endcase
+    end
+
+  always_ff @(posedge CLOCK100, posedge reset)
+    if (reset)
+      currState = START;
+    else
+      currState = nextState;
+
+
 module mainHardware(
     input logic [1:0] CoinValue, 
     input logic [11:0] Guess,
@@ -56,8 +101,9 @@ module mainHardware(
     logic [4:0] coin_sum;
     logic [4:0] coin_difference;
     logic [4:0] total_coins;
+    logic adder_cout;
 
-    Adder #(5) coin_adder (.A(total_coins), .B({0,0,coin}), .cin(0), .cout,
+    Adder #(5) coin_adder (.A(total_coins), .B({0,0,coin}), .cin(0), .cout(adder_cout),
                            .sum(coin_sum));
 
     Adder #(5) coin_subtractor (.A(total_coins) .B(5'b00100), .cin(1), 
@@ -73,7 +119,7 @@ module mainHardware(
     
     
 
-    Register #(5) total_coin_register (.clock(CLOCK100), .en(tc_en), 
+    Register #(5) total_coin_register (.clock(CLOCK100), .en(tc_en & ~adder_cout), 
                                        .clear(reset), .D(prereg_total),
                                        .Q(total_coins));
 
