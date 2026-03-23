@@ -1,7 +1,7 @@
 `default_nettype none
 
-module system_FSM (
-    //control point
+module systemFSM (
+    // Control points
     output logic add_or_sub,
     output logic cv_cl, cv_en,
     output logic tc_en,
@@ -9,7 +9,7 @@ module system_FSM (
     output logic shape_reset, 
     output logic R_en_grader, R_clear_grader,
 
-    //monitor point
+    // Status points
     input logic loaded,
     input logic startgame_real,
     input logic gamedone,
@@ -18,57 +18,105 @@ module system_FSM (
     input logic GradeIt, GameWon,
     input logic CoinInserted);
 
-    enum logic [2:0] {WAIT, INSERTED, ENTERED, START, GRADING} 
-                      currState, nextState;
+    enum logic [2:0] {
+      WAIT,
+      INSERTED,
+      ENTERED,
+      START,
+      GRADING
+      } currState, nextState;
 
-    // Sequential logic for State Transition and Ouputs
-    always_comb begin
+    // Sequential logic for state transitions and ouputs
+    always_comb begin      
+      // Default outputs
+      add_or_sub = 0;
+      cv_en = 0;
+      cv_cl = 0;
+      tc_en = 0;
+      another_round = 0;
+      shape_reset = 0;
+      R_en_grader = 0;
+      R_clear_grader = 1;
 
-      //transition keeper
+      // FSM control logic
+      // Default state: remain in current state
       nextState = currState;
-      
-      //output keeper
-      add_or_sub = 1'b0;
-      cv_en = 1'b0;
-      cv_cl = 1'b0;
-      tc_en = 1'b0;
-      another_round = 1'b0;
-      shape_reset = 1'b0;
-      R_en_grader = 1'b0;
-      R_clear_grader = 1'b1;
-
       case (currState)
         WAIT: begin
-
+          // If we insert a coin, store the value of the coin and add it to
+          // the total coins register
           if (CoinInserted) begin
             nextState = INSERTED;
-            cv_en = 1'b1;
-            add_or_sub = 1'b1;
+            cv_en = 1;
+            add_or_sub = 1;
+            tc_en = 1;
           end
 
+          // When start game is asserted, subtract 4 coins from the total
+          // coins register 
           else if (startgame_real) begin
             nextState = ENTERED;
-            add_or_sub = 1'b0;
-            tc_en = 1'b1;
+            add_or_sub = 0;
+            tc_en = 1;
           end
         end
-        
+
+        INSERTED: begin
+          // Loop repeatedly until CoinInserted gets deasserted to prevent
+          // double counting
+          nextState = (CoinInserted) ? INSERTED : WAIT;
+        end
+
+        ENTERED: begin
+          if (loaded) begin
+            nextState = START;
+            R_en_grader = 0;
+            R_clear_grader = 1;
+          end
+        end
+
+        START: begin
+          if (GameWon && gamedone) begin
+            nextState = WAIT;
+            shape_reset = 1;
+          end
+
+          else if (GradeIt) begin
+            nextState = GRADING;
+            R_en_grader = 1;
+            R_clear_grader = 0;
+          end
+
+          else begin
+            nextState = START;
+            R_en_grader = 0;
+            R_clear_grader = 1;
+          end
+        end
+
+        GRADING: begin
+          nextState = START;
+          another_round = 1;
+          R_en_grader = 0;
+          R_clear_grader = 1;
+        end
       endcase
     end
 
-  always_ff @(posedge CLOCK100, posedge reset)
+  always_ff @(posedge clock, posedge reset)
     if (reset)
-      currState = START;
+      currState <= WAIT;
     else
-      currState = nextState;
+      currState <= nextState;
 
+endmodule: systemFSM
 
 module mainHardware(
     input logic [1:0] CoinValue, 
     input logic [11:0] Guess,
     input logic GradeIt, CLOCK100, reset, StartGame, LoadShapeNow,
     input logic [2:0] LoadShape, 
-    input logic [1:0] ShapeLocation
+    input logic [1:0] ShapeLocation,
     output logic CoinInserted, GameWon,
     output logic [3:0] Zood, Znarly,
     output logic [3:0] NumGames, RoundNumber,
@@ -103,11 +151,11 @@ module mainHardware(
     logic [4:0] total_coins;
     logic adder_cout;
 
-    Adder #(5) coin_adder (.A(total_coins), .B({0,0,coin}), .cin(0), .cout(adder_cout),
+    Adder #(5) coin_adder (.A(total_coins), .B({2'b00, coin}), .cin(1'd0), .cout(adder_cout),
                            .sum(coin_sum));
 
-    Adder #(5) coin_subtractor (.A(total_coins) .B(5'b00100), .cin(1), 
-                                .cout, .sum(coin_difference));
+    Adder #(5) coin_subtractor (.A(total_coins), .B(5'b00100), .cin(1'd1), 
+                                .cout(), .sum(coin_difference));
 
    logic [4:0] prereg_total;
 
@@ -123,9 +171,11 @@ module mainHardware(
                                        .clear(reset), .D(prereg_total),
                                        .Q(total_coins));
 
-    BarrelShiftRegister #(5) barrelshifter (.clock(CLOCK100), .en(1), .load(1),
+    logic [4:0] shifter_out;
+    BarrelShiftRegister #(5) barrelshifter (.clock(CLOCK100), .en(1'd1), .load(1'd1),
                                             .by(2'b10), .D(total_coins),
-                                            .Q({0, 0, NumGames}));
+                                            .Q(shifter_out));
+    assign NumGames = shifter_out[3:0];
 
     logic inserted_async;
 
@@ -137,35 +187,32 @@ module mainHardware(
     logic enough_games;
 
     MagComp #(4) enough_games_comp (.A(NumGames), .B(4'b0000), 
-                                    .AgtB(enough_games));
+                                    .AgtB(enough_games), .AltB(), .AeqB());
 
 
     assign startgame_real = enough_games & StartGame;
 
-    Comparator #(3) win_checker (.A(Zood), .B(3'b100), .AeqB(GameWon));
+    Comparator #(4) win_checker (.A(Znarly), .B(4'b0100), .AeqB(GameWon));
     
     
     
     logic [3:0] total_rounds;
     
-    Counter #(4) round_counter (.clock(CLOCK100), .clear(reset), .up(1),
-                           .load(0), .Q(total_rounds));
+    Counter #(4) round_counter (.clock(CLOCK100), .clear(reset), .up(another_round),
+                           .load(1'd0), .Q(total_rounds), .D(), .en());
 
     
 
     Comparator #(4) is_gamedone (.A(total_rounds), .B(4'b1000), 
                                  .AeqB(gamedone));
 
+    logic [3:0] shape_pos_en;
     Decoder #(4) position_en (.en(LoadShapeNow), .I(ShapeLocation), 
                               .D(shape_pos_en));
 
-    
-    
-    
-    
     //Shape1 Register Logic
     logic shape1reg_en;
-    logic shape1Q;
+    logic [2:0] shape1Q;
 
     assign shape1reg_en = (~(shape1Q[2] | shape1Q[1] | shape1Q[0]) 
                            & shape_pos_en[3]);
@@ -174,7 +221,7 @@ module mainHardware(
 
     //Shape 2 Register Logic                       
     logic shape2reg_en;
-    logic shape2Q;
+    logic [2:0] shape2Q;
     
     assign shape2reg_en = (~(shape2Q[2] | shape2Q[1] | shape2Q[0]) 
                            & shape_pos_en[2]);
@@ -183,7 +230,7 @@ module mainHardware(
 
     //Shape 3 Register Logic                       
     logic shape3reg_en;
-    logic shape3Q;
+    logic [2:0] shape3Q;
     
     assign shape3reg_en = (~(shape3Q[2] | shape3Q[1] | shape3Q[0]) 
                            & shape_pos_en[1]);
@@ -192,20 +239,22 @@ module mainHardware(
 
     //Shape 4 Register Logic                       
     logic shape4reg_en;
-    logic shape4Q;
+    logic [2:0] shape4Q;
     
     assign shape4reg_en = (~(shape4Q[2] | shape4Q[1] | shape4Q[0]) 
                            & shape_pos_en[0]);
     Register #(3) Shape4Reg (.en(shape4reg_en), .clear(shape_reset),
                              .clock(CLOCK100), .D(LoadShape), .Q(shape4Q));
 
-    assign loaded = (~(shape1Q[2] | shape1Q[1] | shape1Q[0]) &
-                     ~(shape2Q[2] | shape2Q[1] | shape2Q[0]) &
-                     ~(shape3Q[2] | shape3Q[1] | shape3Q[0]) &
-                     ~(shape4Q[2] | shape4Q[1] | shape4Q[0]))
+    assign loaded = ((shape1Q[2] | shape1Q[1] | shape1Q[0]) &
+                     (shape2Q[2] | shape2Q[1] | shape2Q[0]) &
+                     (shape3Q[2] | shape3Q[1] | shape3Q[0]) &
+                     (shape4Q[2] | shape4Q[1] | shape4Q[0]));
     
     
 
-    Grader_woFSM grader (.Guess, .CLOCK100, .reset, .R_en(R_en_grader),
-                         .R_clear(R_clear_grader), .Zood, .Znarly,
-                         .MasterPattern({shape1Q, shape2Q, shape3Q, shape4Q}));
+    // Grader_woFSM grader (.Guess, .CLOCK100, .reset, .R_en(R_en_grader),
+    //                      .R_clear(R_clear_grader), .Zood, .Znarly,
+    //                      .MasterPattern({shape1Q, shape2Q, shape3Q, shape4Q}));
+
+endmodule: mainHardware

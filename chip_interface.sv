@@ -32,6 +32,8 @@ module ChipInterface (
     // - Use those wires/signals to connect to the MastermindVGA and
     //   EightSevenSegmentDisplays modules below
 
+
+
 /*
  *  BEWARE CHANGING CODE BELOW THIS LINE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  *
@@ -66,22 +68,22 @@ module ChipInterface (
                         .clearGame( ... ),
                         .masterPattern( ... ),
                         .displayMasterPattern( ... ),
-			.loadZnarlyZood( ... )
+			                  .loadZnarlyZood( ... )
                        );
 
 
-    EightSevenSegmentDisplays displays(.HEX7( ... ), 
-                                       .HEX6( ... ), 
-                                       .HEX5( ... ), 
-                                       .HEX4( ... ),
-                                       .HEX3( ... ), 
-                                       .HEX2( ... ), 
-                                       .HEX1( ... ), 
-                                       .HEX0( ... ),
+    EightSevenSegmentDisplays displays(.HEX7(), //blank
+                                       .HEX6(), //blank
+                                       .HEX5(), // blank
+                                       .HEX4(), // blank
+                                       .HEX3( ... ), // Znarly[3:0]
+                                       .HEX2( ... ), // Zood[3:0]
+                                       .HEX1( ... ), // RoundNumber[3:0]
+                                       .HEX0( ... ), // NumGames[3:0]
                                        .CLOCK_100,
-                                       .reset( ... ),
-                                       .dec_points( ... ),
-                                       .blank( ... ),  
+                                       .reset(BTN[0]),
+                                       .dec_points(8'b0000_0000),
+                                       .blank(8'b1111_0000),
                                        .D2_AN,
                                        .D1_AN,
                                        .D2_SEG,
