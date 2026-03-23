@@ -1,0 +1,10 @@
+csrc/
+simv*
+*.daidir/
+*.vdb/
+ucli.key
+DVEfiles/
+*.log
+*.jou
+.Xil/
+xsim.dir/
