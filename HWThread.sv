@@ -1,5 +1,23 @@
 `default_nettype none
 
+module system_FSM (
+    //control point
+    output logic add_or_sub,
+    output logic cv_cl, cv_en,
+    output logic tc_en,
+    output logic another_round,
+    output logic shape_reset, 
+    output logic R_en_grader, R_clear_grader,
+
+    //monitor point
+    input logic loaded,
+    input logic startgame_real,
+    input logic gamedone,
+    input logic reset,
+    input logic clock,
+    input logic GradeIt, GameWon,
+    input logic CoinInserted);
+
 module mainHardware(
     input logic [1:0] CoinValue, 
     input logic [11:0] Guess,
