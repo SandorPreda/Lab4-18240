@@ -67,6 +67,7 @@ module systemFSM (
           nextState = ENTERED;
           add_or_sub = 0;
           tc_en = 1;
+          LoadNumGames = 1;
         end
       end
 
@@ -76,8 +77,12 @@ module systemFSM (
         if (~CoinInserted) begin
            nextState = WAIT;
            cv_cl = 1;
+           LoadNumGames = 1;
         end 
-        else nextState = INSERTED;
+        else begin
+           nextState = INSERTED;
+           add_or_sub = 1;
+        end
       end
 
       ENTERED: begin
