@@ -196,7 +196,7 @@ module mainHardware(
 
   // Calculating the NumGames count
   
-  assign NumGames = total_out[4:2];
+  assign NumGames = total_coins[4:2];
 
 
   assign CoinInserted = CoinValue[1] | CoinValue[0];
