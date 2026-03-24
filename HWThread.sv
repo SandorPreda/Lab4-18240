@@ -8,7 +8,7 @@ module systemFSM (
   output logic shape_reset, 
   output logic R_en_grader, R_clear_grader,
   output logic count_cl,
-  output logic currState,
+  output logic [2:0] outputState,
 
   //For VGA only
   output logic LoadNumGames, LoadGuess, ClearGame,
@@ -31,6 +31,8 @@ module systemFSM (
     GRADING = 3'b100
     } currState, nextState;
 
+  assign outputState = currState;
+
   // Sequential logic for state transitions and ouputs
   always_comb begin      
     // Default outputs
@@ -41,7 +43,7 @@ module systemFSM (
     R_en_grader = 0;
     R_clear_grader = 0;
     DisplayMasterPattern = 1;
-    LoadNumGames = 0;
+    LoadNumGames = 1;
     LoadGuess = 0;
     ClearGame = 0;
     LoadZnarlyZood = 0;
@@ -54,6 +56,7 @@ module systemFSM (
     case (currState)
       WAIT: begin
         count_cl = 1;
+        ClearGame = 1;
         R_clear_grader = 1;
         // If we insert a coin, store the value of the coin and add it to
         // the total coins register
@@ -89,7 +92,7 @@ module systemFSM (
       end
 
       ENTERED: begin
-
+        LoadNumGames = 1;
         // Start the actual game if the master pattern is loaded
         if (loaded) begin
           nextState = START;
