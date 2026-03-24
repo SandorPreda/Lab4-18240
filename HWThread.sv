@@ -42,7 +42,7 @@ module systemFSM (
     shape_reset = 0;
     R_en_grader = 0;
     R_clear_grader = 0;
-    DisplayMasterPattern = 0;
+    DisplayMasterPattern = 1;
     LoadNumGames = 0;
     LoadGuess = 0;
     ClearGame = 0;
@@ -55,6 +55,7 @@ module systemFSM (
     case (currState)
       WAIT: begin
         count_cl = 1;
+        ClearGame = 1;
         R_clear_grader = 1;
         // If we insert a coin, store the value of the coin and add it to
         // the total coins register
@@ -90,6 +91,8 @@ module systemFSM (
       end
 
       ENTERED: begin
+        //keeping load num games
+        LoadNumGames = 1;
         // Start the actual game if the master pattern is loaded
         if (loaded) begin
           nextState = START;
