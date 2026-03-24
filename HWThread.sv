@@ -8,7 +8,7 @@ module systemFSM (
   output logic shape_reset, 
   output logic R_en_grader, R_clear_grader,
   output logic count_cl,
-  output logic [2:0] outputState,
+  output logic currState,
 
   //For VGA only
   output logic LoadNumGames, LoadGuess, ClearGame,
@@ -23,8 +23,6 @@ module systemFSM (
   input logic GradeIt, GameWon,
   input logic CoinInserted);
 
-  
-
   enum logic [2:0] {
     WAIT = 3'b000,
     INSERTED = 3'b001,
@@ -32,8 +30,6 @@ module systemFSM (
     START = 3'b011,
     GRADING = 3'b100
     } currState, nextState;
-
-  assign outputState = currState;
 
   // Sequential logic for state transitions and ouputs
   always_comb begin      
@@ -44,20 +40,20 @@ module systemFSM (
     shape_reset = 0;
     R_en_grader = 0;
     R_clear_grader = 0;
-    DisplayMasterPattern = 1;
-    LoadNumGames = 1;
+    DisplayMasterPattern = 0;
+    LoadNumGames = 0;
     LoadGuess = 0;
     ClearGame = 0;
     LoadZnarlyZood = 0;
     count_cl = 0;
 
+    // FIX: when shapes are being loaded, anzarly and zood shouldnt be displaayed
     // FSM control logic
     // Default state: remain in current state
     nextState = currState;
     case (currState)
       WAIT: begin
         count_cl = 1;
-        ClearGame = 1;
         R_clear_grader = 1;
         // If we insert a coin, store the value of the coin and add it to
         // the total coins register
@@ -73,7 +69,7 @@ module systemFSM (
           nextState = ENTERED;
           add_or_sub = 0;
           tc_en = 1;
-          LoadNumGames = 1;
+          LoadNumGames = 1; // isnt workign rn, fix###########
           shape_reset = 1;
         end
       end
@@ -88,18 +84,17 @@ module systemFSM (
         else begin
            nextState = INSERTED;
            add_or_sub = 1;
+           LoadNumGames = 1;
         end
       end
 
       ENTERED: begin
-        //keeping load num games
-        LoadNumGames = 1;
+
         // Start the actual game if the master pattern is loaded
         if (loaded) begin
           nextState = START;
           R_en_grader = 0;
           R_clear_grader = 1;
-          DisplayMasterPattern = 0;
         end
 
         // Else, stay to load the master pattern
@@ -137,7 +132,14 @@ module systemFSM (
 
       GRADING: begin
         // Grade the round
-        if (GameWon) begin
+        // Loop if remains asserted
+        if (GradeIt) begin
+          nextState = GRADING;
+          R_en_grader = 0;
+          R_clear_grader = 0;
+        end
+
+        else if (GameWon) begin
           nextState = WAIT;
           shape_reset = 1;
           ClearGame = 1;
@@ -145,17 +147,9 @@ module systemFSM (
           R_en_grader = 0;
         end
 
-        else if (~GradeIt) begin
+        else begin
           nextState = START;
           another_round = 1;
-          R_en_grader = 0;
-          R_clear_grader = 0;
-        end
-
-        // Loop repeatedly until GradeIt is deasserted to avoid grading
-        // the same round multiple times
-        else begin
-          nextState = GRADING;
           R_en_grader = 0;
           R_clear_grader = 0;
         end
