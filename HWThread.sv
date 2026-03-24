@@ -299,15 +299,17 @@ module mainHardware(
   
   
   //counts the number of rounds
-  Counter #(4) round_counter (.clock(clock), .clear(reset | count_cl), .up(1'd1),
-                          .load(1'd0), .Q(RoundNumber), .D(), .en(another_round));
+  Counter #(4) round_counter (.clock(clock), .clear(reset | count_cl), 
+                              .up(1'd1), .load(1'd0), .Q(RoundNumber), 
+                              .D(), .en(another_round));
 
   
   //checks whether all 8 rounds went through
   Comparator #(4) is_gamedone (.A(RoundNumber), .B(4'b1000), 
                                 .AeqB(gamedone));
 
-  //decodes shape position so you are putting the shape in the correct location
+  //decodes shape position so you are putting the shape in the correct 
+  //location
   logic [3:0] shape_pos_en;
   Decoder #(4) position_en (.en(LoadShapeNow), .I(ShapeLocation), 
                             .D(shape_pos_en));
