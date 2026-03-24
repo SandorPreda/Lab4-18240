@@ -42,6 +42,7 @@ module ChipInterface (
     logic another_round;
     logic shape_reset;
     logic R_en_grader, R_clear_grader;
+    logic gameWonLED;
 
     // Status points
     logic loaded;
@@ -89,7 +90,7 @@ module ChipInterface (
     assign LoadShapeNow = BTN[3];
     assign reset = BTN[0];
     assign clock = CLOCK_100;
-    assign LD[0] = GameWon;
+    assign LD[0] = GameWonLED;
     assign LD[15:13] = outputState;
 
 /*
