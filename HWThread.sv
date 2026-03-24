@@ -232,8 +232,8 @@ module mainHardware(
   
   
   
-  Counter #(4) round_counter (.clock(clock), .clear(reset), .up(another_round),
-                          .load(1'd0), .Q(RoundNumber), .D(), .en());
+  Counter #(4) round_counter (.clock(clock), .clear(reset), .up(1'd1),
+                          .load(1'd0), .Q(RoundNumber), .D(), .en(another_round));
 
   
 
