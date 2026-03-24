@@ -9,6 +9,10 @@ module systemFSM (
   output logic shape_reset, 
   output logic R_en_grader, R_clear_grader,
 
+  //For VGA only
+  output logic LoadNumGames, LoadGuess, ClearGame;
+  output logic DisplayMasterPattern, LoadZnarlyZood;
+
   // Status points
   input logic loaded,
   input logic startgame_real,
@@ -37,6 +41,11 @@ module systemFSM (
     shape_reset = 0;
     R_en_grader = 0;
     R_clear_grader = 1;
+    DisplayMasterPattern = 0;
+    LoadNumGames = 0;
+    LoadGuess = 0;
+    ClearGame = 0;
+    LoadZnarlyZood = 0;
 
     // FSM control logic
     // Default state: remain in current state
@@ -64,7 +73,11 @@ module systemFSM (
       INSERTED: begin
         // Loop repeatedly until CoinInserted gets deasserted to prevent
         // double counting (Note: default outputs = nothing is calculated)
-        nextState = (CoinInserted) ? INSERTED : WAIT;
+        if (~CoinInserted) begin
+           nextState = WAIT;
+           cv_cl = 1;
+        end 
+        else nextState = INSERTED;
       end
 
       ENTERED: begin
