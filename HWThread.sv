@@ -124,7 +124,7 @@ endmodule: systemFSM
 module mainHardware(
   input logic [1:0] CoinValue, 
   input logic [11:0] Guess,
-  input logic GradeIt, clock, reset, StartGame, LoadShapeNow,
+  input logic GradeIt, CLOCK100, reset, StartGame, LoadShapeNow,
   input logic [2:0] LoadShape, 
   input logic [1:0] ShapeLocation,
   output logic CoinInserted, GameWon,
@@ -148,7 +148,7 @@ module mainHardware(
   logic [1:0] cv_reg;
 
   Register #(2) cvalueReg (
-    .clock(clock),
+    .clock(CLOCK100),
     .clear(cv_cl),
     .en(cv_en),
     .D(CoinValue),
@@ -157,11 +157,14 @@ module mainHardware(
 
   logic [2:0] coin;
 
-  MultibitMultiplexer #(.BITWIDTH(3),.OPTIONS(4)) cv_mux (
-    .I(12'b101011001000),
+  Mux4to1 #(3) cv_mux (
+    .I0(3'd0),
+    .I1(3'd1),
+    .I2(3'd3),
+    .I3(3'd5),
     .S(cv_reg),
     .Y(coin)
-    );
+  );
 
   logic [4:0] coin_sum;
   logic [4:0] coin_difference;
@@ -176,20 +179,21 @@ module mainHardware(
 
   logic [4:0] prereg_total;
 
-
-
-  MultibitMultiplexer #(.BITWIDTH(5), .OPTIONS(2)) 
-                      add_sub_mux (.I({coin_sum, coin_difference}), 
-                                    .S(add_or_sub), .Y(prereg_total));
+  Mux2to1 #(5) add_sub_mux (
+    .I0(coin_difference),
+    .I1(coin_sum),
+    .S(add_or_sub),
+    .Y(prereg_total)
+  );
   
-  Register #(5) total_coin_register (.clock(clock), .en(tc_en & ~adder_cout), 
+  Register #(5) total_coin_register (.clock(CLOCK100), .en(tc_en & ~adder_cout), 
                                      .clear(reset), .D(prereg_total),
                                      .Q(total_coins));
 
   // Calculating the NumGames count
   logic [4:0] shifter_out;
 
-  BarrelShiftRegister #(5) barrelshifter (.clock(clock), .en(1'd1), .load(1'd1),
+  BarrelShiftRegister #(5) barrelshifter (.clock(CLOCK100), .en(1'd1), .load(1'd1),
                                           .by(2'b10), .D(total_coins),
                                           .Q(shifter_out));
   assign NumGames = shifter_out[3:0];
@@ -198,7 +202,7 @@ module mainHardware(
 
   assign inserted_async = CoinValue[1] | CoinValue[0];
 
-  Synchronizer insert_synchronizer (.clock(clock), .async(inserted_async),
+  Synchronizer insert_synchronizer (.clock(CLOCK100), .async(inserted_async),
                                     .sync(CoinInserted));
 
   logic enough_games;
@@ -233,7 +237,7 @@ module mainHardware(
   assign shape1reg_en = (~(shape1Q[2] | shape1Q[1] | shape1Q[0]) 
                           & shape_pos_en[3]);
   Register #(3) Shape1Reg (.en(shape1reg_en), .clear(shape_reset),
-                            .clock(clock), .D(LoadShape), .Q(shape1Q));
+                            .clock(CLOCK100), .D(LoadShape), .Q(shape1Q));
 
   //Shape 2 Register Logic                       
   logic shape2reg_en;
@@ -242,7 +246,7 @@ module mainHardware(
   assign shape2reg_en = (~(shape2Q[2] | shape2Q[1] | shape2Q[0]) 
                           & shape_pos_en[2]);
   Register #(3) Shape2Reg (.en(shape2reg_en), .clear(shape_reset),
-                            .clock(clock), .D(LoadShape), .Q(shape2Q));
+                            .clock(CLOCK100), .D(LoadShape), .Q(shape2Q));
 
   //Shape 3 Register Logic                       
   logic shape3reg_en;
@@ -251,7 +255,7 @@ module mainHardware(
   assign shape3reg_en = (~(shape3Q[2] | shape3Q[1] | shape3Q[0]) 
                           & shape_pos_en[1]);
   Register #(3) Shape3Reg (.en(shape3reg_en), .clear(shape_reset),
-                            .clock(clock), .D(LoadShape), .Q(shape3Q));
+                            .clock(CLOCK100), .D(LoadShape), .Q(shape3Q));
 
   //Shape 4 Register Logic                       
   logic shape4reg_en;
@@ -260,7 +264,7 @@ module mainHardware(
   assign shape4reg_en = (~(shape4Q[2] | shape4Q[1] | shape4Q[0]) 
                           & shape_pos_en[0]);
   Register #(3) Shape4Reg (.en(shape4reg_en), .clear(shape_reset),
-                            .clock(clock), .D(LoadShape), .Q(shape4Q));
+                            .clock(CLOCK100), .D(LoadShape), .Q(shape4Q));
 
   assign loaded = ((shape1Q[2] | shape1Q[1] | shape1Q[0]) &
                     (shape2Q[2] | shape2Q[1] | shape2Q[0]) &
@@ -269,8 +273,8 @@ module mainHardware(
   
   
 
-  Grader_woFSM grader (.Guess, .clock, .reset, .R_en(R_en_grader),
-                        .R_clear(R_clear_grader), .Zood, .Znarly,
-                        .MasterPattern({shape1Q, shape2Q, shape3Q, shape4Q}));
+  Grader_woFSM grader (.Guess, .CLOCK100, .reset, .R_en(R_en_grader),
+                       .R_clear(R_clear_grader), .Zood, .Znarly,
+                       .MasterPattern({shape1Q, shape2Q, shape3Q, shape4Q}));
 
 endmodule: mainHardware
