@@ -43,7 +43,7 @@ module systemFSM (
     R_en_grader = 0;
     R_clear_grader = 0;
     DisplayMasterPattern = 1;
-    LoadNumGames = 0;
+    LoadNumGames = 1;
     LoadGuess = 0;
     ClearGame = 0;
     LoadZnarlyZood = 0;
@@ -86,7 +86,6 @@ module systemFSM (
         else begin
            nextState = INSERTED;
            add_or_sub = 1;
-           LoadNumGames = 1;
         end
       end
 
