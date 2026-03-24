@@ -72,6 +72,7 @@ module ChipInterface (
 
     //state Transistions
     logic [2:0] outputState;
+    logic exitGame;
 
     //FSM
     systemFSM fsm (.*);
@@ -88,6 +89,7 @@ module ChipInterface (
     assign clock = CLOCK_100;
     assign LD[0] = gameWonLED;
     assign LD[15:13] = outputState;
+    assign SW[13] = exitGame;
 
     //Synchronizer
 

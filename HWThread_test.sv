@@ -17,6 +17,7 @@ module HWThreadTest;
     logic clock;
     logic GradeIt, GameWon;
     logic CoinInserted;
+    logic exitGame;
 
     // Other pieces
     logic [1:0] CoinValue;

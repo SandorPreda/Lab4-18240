@@ -25,7 +25,7 @@ module systemFSM (
   input logic clock,
   input logic GradeIt, GameWon,
   input logic CoinInserted,
-  input logic StartGame);
+  input logic exitGame);
 
   enum logic [2:0] {
     WAIT = 3'b000,
@@ -165,7 +165,7 @@ module systemFSM (
       end
 
       GAME_WON: begin
-        if (StartGame) begin
+        if (exitGame) begin
           nextState = WAIT;
           shape_reset = 1;
           ClearGame = 1;
@@ -177,7 +177,7 @@ module systemFSM (
       end
 
       GAME_LOST: begin
-        if (StartGame) begin
+        if (exitGame) begin
           nextState = WAIT;
           shape_reset = 1;
           ClearGame = 1;
