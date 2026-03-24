@@ -1,6 +1,9 @@
 // `default_nettype none
 
 module systemFSM (
+  // The module implements a FSM for our datapath that controls the HDMI
+  // inputs, the registers, and the game status itself
+
   // Control points
   output logic add_or_sub,
   output logic tc_en,
@@ -206,6 +209,8 @@ endmodule: systemFSM
 
 //Main system datapath
 module mainHardware(
+  // This module contains our main hardware, the instantiations for all
+  // components, and is controlled by the FSM.
   //logic for the input
   input logic [1:0] CoinValue, 
   input logic [11:0] Guess,
