@@ -166,7 +166,7 @@ module systemFSM (
       end
 
       GAME_WON: begin
-        if (StartGame)
+        if (GradeIt)
           nextState = START;
           shape_reset = 1;
           ClearGame = 1;
@@ -174,7 +174,7 @@ module systemFSM (
       end
 
       GAME_LOST: begin
-        if (StartGame)
+        if (GradeIt)
           nextState = START;
           shape_reset = 1;
           ClearGame = 1;
