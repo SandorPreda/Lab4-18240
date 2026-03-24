@@ -90,7 +90,7 @@ module systemFSM (
 
       ENTERED: begin
         // Start the actual game if the master pattern is loaded
-        if (loaded) begin
+        if (loaded & ~GradeIt) begin
           nextState = START;
           R_en_grader = 0;
           R_clear_grader = 1;
@@ -105,7 +105,7 @@ module systemFSM (
 
       START: begin
         // If the game is won and done, reset everything
-        if (GameWon || gamedone) begin
+        if (GameWon | gamedone) begin
           nextState = WAIT;
           shape_reset = 1;
           ClearGame = 1;
@@ -137,6 +137,7 @@ module systemFSM (
           R_en_grader = 1;
           R_clear_grader = 0;
           LoadZnarlyZood = 1;
+          LoadGuess = 1;
         end
 
         else if (GameWon) begin
