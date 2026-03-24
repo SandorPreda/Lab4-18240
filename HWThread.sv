@@ -23,7 +23,7 @@ module systemFSM (
   input logic GradeIt, GameWon,
   input logic CoinInserted);
 
-  assign outputSpace = currState;
+  assign outputState = currState;
 
   enum logic [2:0] {
     WAIT = 3'b000,
