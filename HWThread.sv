@@ -157,7 +157,7 @@ module systemFSM (
           R_en_grader = 0;
         end
 
-        else if (~GradeIt) begin
+        else begin
           nextState = START;
           another_round = 1;
           R_en_grader = 0;

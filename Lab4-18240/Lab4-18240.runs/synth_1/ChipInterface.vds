@@ -1,0 +1,475 @@
+#-----------------------------------------------------------
+# Vivado v2024.2 (64-bit)
+# SW Build 5239630 on Fri Nov 08 22:34:34 MST 2024
+# IP Build 5239520 on Sun Nov 10 16:12:51 MST 2024
+# SharedData Build 5239561 on Fri Nov 08 14:39:27 MST 2024
+# Start of session at: Tue Mar 24 17:10:25 2026
+# Process ID         : 1085445
+# Current directory  : /afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.runs/synth_1
+# Command line       : vivado -log ChipInterface.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source ChipInterface.tcl
+# Log file           : /afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.runs/synth_1/ChipInterface.vds
+# Journal file       : /afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.runs/synth_1/vivado.jou
+# Running On         : hh-1305-29.lan.local.cmu.edu
+# Platform           : RedHatEnterprise
+# Operating System   : Red Hat Enterprise Linux release 8.10 (Ootpa)
+# Processor Detail   : 12th Gen Intel(R) Core(TM) i7-12700
+# CPU Frequency      : 2100.000 MHz
+# CPU Physical cores : 12
+# CPU Logical cores  : 20
+# Host memory        : 33109 MB
+# Swap memory        : 17179 MB
+# Total Virtual      : 50289 MB
+# Available Virtual  : 39495 MB
+#-----------------------------------------------------------
+source ChipInterface.tcl -notrace
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/hdmi_tx_1.0'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/afs/ece.cmu.edu/support/xilinx/xilinx.release/Vivado-2024.2/Vivado/2024.2/data/ip'.
+Command: read_checkpoint -auto_incremental -incremental /afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.srcs/utils_1/imports/synth_1/ChipInterface.dcp
+INFO: [Vivado 12-5825] Read reference checkpoint from /afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.srcs/utils_1/imports/synth_1/ChipInterface.dcp for incremental synthesis
+INFO: [Vivado 12-7989] Please ensure there are no constraint changes
+Command: synth_design -top ChipInterface -part xc7s50csga324-1
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7s50'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7s50'
+INFO: [Device 21-403] Loading part xc7s50csga324-1
+INFO: [Designutils 20-5440] No compile time benefit to using incremental synthesis; A full resynthesis will be run
+INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 7 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 1085540
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 2145.117 ; gain = 420.680 ; free physical = 6054 ; free virtual = 36415
+---------------------------------------------------------------------------------
+INFO: [Synth 8-11241] undeclared symbol 'clk_40MHz', assumed default net type 'wire' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/chip_interface.sv:153]
+WARNING: [Synth 8-8895] 'clk_40MHz' is already implicitly declared on line 153 [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/chip_interface.sv:162]
+INFO: [Synth 8-6157] synthesizing module 'ChipInterface' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/chip_interface.sv:18]
+INFO: [Synth 8-6157] synthesizing module 'systemFSM' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/HWThread.sv:3]
+INFO: [Synth 8-155] case statement is not full and has no default [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/HWThread.sv:62]
+INFO: [Synth 8-6155] done synthesizing module 'systemFSM' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/HWThread.sv:3]
+INFO: [Synth 8-6157] synthesizing module 'mainHardware' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/HWThread.sv:194]
+INFO: [Synth 8-6157] synthesizing module 'Mux4to1' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:47]
+	Parameter WIDTH bound to: 3 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'Mux4to1' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:47]
+INFO: [Synth 8-6157] synthesizing module 'Adder' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:79]
+	Parameter WIDTH bound to: 5 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'Adder' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:79]
+INFO: [Synth 8-6157] synthesizing module 'Mux2to1' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:37]
+	Parameter WIDTH bound to: 5 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'Mux2to1' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:37]
+INFO: [Synth 8-6157] synthesizing module 'Register' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:115]
+	Parameter WIDTH bound to: 5 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'Register' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:115]
+INFO: [Synth 8-6157] synthesizing module 'MagComp' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:59]
+	Parameter WIDTH bound to: 4 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'MagComp' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:59]
+INFO: [Synth 8-6157] synthesizing module 'Comparator' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:70]
+	Parameter WIDTH bound to: 4 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'Comparator' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:70]
+INFO: [Synth 8-6157] synthesizing module 'Counter' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:128]
+	Parameter WIDTH bound to: 4 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'Counter' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:128]
+INFO: [Synth 8-6157] synthesizing module 'Decoder' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:3]
+	Parameter WIDTH bound to: 4 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'Decoder' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:3]
+INFO: [Synth 8-6157] synthesizing module 'Register__parameterized0' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:115]
+	Parameter WIDTH bound to: 3 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'Register__parameterized0' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:115]
+INFO: [Synth 8-6157] synthesizing module 'Grader_woFSM' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/grader.sv:164]
+INFO: [Synth 8-6157] synthesizing module 'Comparator__parameterized0' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:70]
+	Parameter WIDTH bound to: 3 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'Comparator__parameterized0' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:70]
+INFO: [Synth 8-6157] synthesizing module 'Adder__parameterized0' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:79]
+	Parameter WIDTH bound to: 4 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'Adder__parameterized0' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:79]
+INFO: [Synth 8-6155] done synthesizing module 'Grader_woFSM' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/grader.sv:164]
+INFO: [Synth 8-6155] done synthesizing module 'mainHardware' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/HWThread.sv:194]
+INFO: [Synth 8-6157] synthesizing module 'MastermindVGA' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:48]
+INFO: [Synth 8-6157] synthesizing module 'vga' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:692]
+INFO: [Synth 8-6157] synthesizing module 'simple_counter' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:791]
+	Parameter WIDTH bound to: 10 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'simple_counter' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:791]
+INFO: [Synth 8-6157] synthesizing module 'simple_counter__parameterized0' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:791]
+	Parameter WIDTH bound to: 11 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'simple_counter__parameterized0' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:791]
+INFO: [Synth 8-6155] done synthesizing module 'vga' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:692]
+INFO: [Synth 8-6157] synthesizing module 'registerAZ' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:810]
+	Parameter WIDTH bound to: 4 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'registerAZ' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:810]
+INFO: [Synth 8-6157] synthesizing module 'range_check' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:764]
+INFO: [Synth 8-6155] done synthesizing module 'range_check' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:764]
+INFO: [Synth 8-6157] synthesizing module 'drawNumber' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:312]
+INFO: [Synth 8-6157] synthesizing module 'offset_check' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:777]
+	Parameter WIDTH bound to: 10 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'offset_check' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:777]
+WARNING: [Synth 8-689] width (32) of port connection 'low' does not match port width (10) of module 'offset_check' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:407]
+WARNING: [Synth 8-689] width (32) of port connection 'low' does not match port width (10) of module 'offset_check' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:433]
+WARNING: [Synth 8-689] width (32) of port connection 'low' does not match port width (10) of module 'offset_check' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:459]
+INFO: [Synth 8-6155] done synthesizing module 'drawNumber' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:312]
+WARNING: [Synth 8-689] width (4) of port connection 'value' does not match port width (3) of module 'drawNumber' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:274]
+INFO: [Synth 8-6157] synthesizing module 'drawShape' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:585]
+INFO: [Synth 8-6155] done synthesizing module 'drawShape' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:585]
+INFO: [Synth 8-6157] synthesizing module 'drawZnarlyZood' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:473]
+INFO: [Synth 8-6155] done synthesizing module 'drawZnarlyZood' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:473]
+INFO: [Synth 8-6155] done synthesizing module 'MastermindVGA' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/mastermindVGA.sv:48]
+INFO: [Synth 8-6157] synthesizing module 'EightSevenSegmentDisplays' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/seven_segment.sv:15]
+INFO: [Synth 8-6157] synthesizing module 'SevenSegmentDisplay' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/seven_segment.sv:159]
+INFO: [Synth 8-6157] synthesizing module 'HextoSevenSegment' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/seven_segment.sv:191]
+INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/seven_segment.sv:196]
+INFO: [Synth 8-6155] done synthesizing module 'HextoSevenSegment' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/seven_segment.sv:191]
+INFO: [Synth 8-6155] done synthesizing module 'SevenSegmentDisplay' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/seven_segment.sv:159]
+INFO: [Synth 8-6157] synthesizing module 'SSDCounter' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/seven_segment.sv:132]
+	Parameter WIDTH bound to: 17 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'SSDCounter' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/seven_segment.sv:132]
+INFO: [Synth 8-6157] synthesizing module 'SSDCounter__parameterized0' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/seven_segment.sv:132]
+	Parameter WIDTH bound to: 2 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'SSDCounter__parameterized0' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/seven_segment.sv:132]
+INFO: [Synth 8-6157] synthesizing module 'OneColdDecoder' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/seven_segment.sv:118]
+	Parameter NUM_OUTPUTS bound to: 4 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'OneColdDecoder' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/seven_segment.sv:118]
+INFO: [Synth 8-6155] done synthesizing module 'EightSevenSegmentDisplays' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/seven_segment.sv:15]
+INFO: [Synth 8-6157] synthesizing module 'Synchronizer' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:189]
+INFO: [Synth 8-6155] done synthesizing module 'Synchronizer' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/library.sv:189]
+INFO: [Synth 8-6157] synthesizing module 'clk_wiz_0' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.runs/synth_1/.Xil/Vivado-1085445-hh-1305-29.lan.local.cmu.edu/realtime/clk_wiz_0_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'clk_wiz_0' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.runs/synth_1/.Xil/Vivado-1085445-hh-1305-29.lan.local.cmu.edu/realtime/clk_wiz_0_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'hdmi_tx_0' [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.runs/synth_1/.Xil/Vivado-1085445-hh-1305-29.lan.local.cmu.edu/realtime/hdmi_tx_0_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'hdmi_tx_0' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.runs/synth_1/.Xil/Vivado-1085445-hh-1305-29.lan.local.cmu.edu/realtime/hdmi_tx_0_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'ChipInterface' (0#1) [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/chip_interface.sv:18]
+WARNING: [Synth 8-7129] Port reset in module Grader_woFSM is either unconnected or has no load
+WARNING: [Synth 8-7129] Port CoinInserted in module mainHardware is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LD[12] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LD[11] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LD[10] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LD[9] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LD[8] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LD[7] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LD[6] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LD[5] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LD[4] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LD[3] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LD[2] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LD[1] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SW[13] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SW[12] in module ChipInterface is either unconnected or has no load
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 2229.086 ; gain = 504.648 ; free physical = 5952 ; free virtual = 36322
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 2246.898 ; gain = 522.461 ; free physical = 5940 ; free virtual = 36310
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 2246.898 ; gain = 522.461 ; free physical = 5940 ; free virtual = 36310
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2246.898 ; gain = 0.000 ; free physical = 5939 ; free virtual = 36310
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.gen/sources_1/ip/clk_wiz_0/clk_wiz_0/clk_wiz_0_in_context.xdc] for cell 'clk_wiz'
+Finished Parsing XDC File [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.gen/sources_1/ip/clk_wiz_0/clk_wiz_0/clk_wiz_0_in_context.xdc] for cell 'clk_wiz'
+Parsing XDC File [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.gen/sources_1/ip/hdmi_tx_0/hdmi_tx_0/hdmi_tx_0_in_context.xdc] for cell 'vga_to_hdmi'
+Finished Parsing XDC File [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.gen/sources_1/ip/hdmi_tx_0/hdmi_tx_0/hdmi_tx_0_in_context.xdc] for cell 'vga_to_hdmi'
+Parsing XDC File [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Boolean240.xdc]
+WARNING: [Vivado 12-507] No nets matched 'BTN_IBUF[3]'. [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Boolean240.xdc:6]
+WARNING: [Vivado 12-584] No ports matched 'RGB0[0]'. [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Boolean240.xdc:55]
+WARNING: [Vivado 12-584] No ports matched 'RGB0[1]'. [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Boolean240.xdc:56]
+WARNING: [Vivado 12-584] No ports matched 'RGB0[2]'. [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Boolean240.xdc:57]
+WARNING: [Vivado 12-584] No ports matched 'RGB1[0]'. [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Boolean240.xdc:58]
+WARNING: [Vivado 12-584] No ports matched 'RGB1[1]'. [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Boolean240.xdc:59]
+WARNING: [Vivado 12-584] No ports matched 'RGB1[2]'. [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Boolean240.xdc:60]
+WARNING: [Vivado 12-584] No ports matched 'UART_rxd'. [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Boolean240.xdc:91]
+WARNING: [Vivado 12-584] No ports matched 'UART_txd'. [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Boolean240.xdc:92]
+WARNING: [Vivado 12-584] No ports matched 'left_audio_out'. [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Boolean240.xdc:107]
+WARNING: [Vivado 12-584] No ports matched 'right_audio_out'. [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Boolean240.xdc:108]
+WARNING: [Vivado 12-584] No ports matched 'ble_uart_tx'. [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Boolean240.xdc:111]
+WARNING: [Vivado 12-584] No ports matched 'ble_uart_rx'. [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Boolean240.xdc:112]
+WARNING: [Vivado 12-584] No ports matched 'ble_uart_rts'. [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Boolean240.xdc:113]
+WARNING: [Vivado 12-584] No ports matched 'ble_uart_cts'. [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Boolean240.xdc:114]
+WARNING: [Vivado 12-584] No ports matched 'servo0'. [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Boolean240.xdc:117]
+WARNING: [Vivado 12-584] No ports matched 'servo1'. [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Boolean240.xdc:118]
+WARNING: [Vivado 12-584] No ports matched 'servo2'. [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Boolean240.xdc:119]
+WARNING: [Vivado 12-584] No ports matched 'servo3'. [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Boolean240.xdc:120]
+Finished Parsing XDC File [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Boolean240.xdc]
+WARNING: [Project 1-498] One or more constraints failed evaluation while reading constraint file [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Boolean240.xdc] and the design contains unresolved black boxes. These constraints will be read post-synthesis (as long as their source constraint file is marked as used_in_implementation) and should be applied correctly then. You should review the constraints listed in the file [.Xil/ChipInterface_propImpl.xdc] and check the run log file to verify that these constraints were correctly applied.
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [/afs/andrew.cmu.edu/usr14/spreda/private/18240/Boolean240.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/ChipInterface_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/ChipInterface_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2385.645 ; gain = 0.000 ; free physical = 5845 ; free virtual = 36221
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 2385.645 ; gain = 0.000 ; free physical = 5849 ; free virtual = 36224
+INFO: [Designutils 20-5440] No compile time benefit to using incremental synthesis; A full resynthesis will be run
+INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 2385.645 ; gain = 661.207 ; free physical = 5832 ; free virtual = 36224
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7s50csga324-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 2393.648 ; gain = 669.211 ; free physical = 5832 ; free virtual = 36224
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+Applied set_property IO_BUFFER_TYPE = NONE for CLOCK_100. (constraint file  /afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.gen/sources_1/ip/clk_wiz_0/clk_wiz_0/clk_wiz_0_in_context.xdc, line 4).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for CLOCK_100. (constraint file  /afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.gen/sources_1/ip/clk_wiz_0/clk_wiz_0/clk_wiz_0_in_context.xdc, line 5).
+Applied set_property IO_BUFFER_TYPE = NONE for hdmi_clk_n. (constraint file  /afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.gen/sources_1/ip/hdmi_tx_0/hdmi_tx_0/hdmi_tx_0_in_context.xdc, line 1).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for hdmi_clk_n. (constraint file  /afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.gen/sources_1/ip/hdmi_tx_0/hdmi_tx_0/hdmi_tx_0_in_context.xdc, line 2).
+Applied set_property IO_BUFFER_TYPE = NONE for hdmi_clk_p. (constraint file  /afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.gen/sources_1/ip/hdmi_tx_0/hdmi_tx_0/hdmi_tx_0_in_context.xdc, line 3).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for hdmi_clk_p. (constraint file  /afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.gen/sources_1/ip/hdmi_tx_0/hdmi_tx_0/hdmi_tx_0_in_context.xdc, line 4).
+Applied set_property IO_BUFFER_TYPE = NONE for hdmi_tx_n[0]. (constraint file  /afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.gen/sources_1/ip/hdmi_tx_0/hdmi_tx_0/hdmi_tx_0_in_context.xdc, line 5).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for hdmi_tx_n[0]. (constraint file  /afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.gen/sources_1/ip/hdmi_tx_0/hdmi_tx_0/hdmi_tx_0_in_context.xdc, line 6).
+Applied set_property IO_BUFFER_TYPE = NONE for hdmi_tx_n[1]. (constraint file  /afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.gen/sources_1/ip/hdmi_tx_0/hdmi_tx_0/hdmi_tx_0_in_context.xdc, line 7).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for hdmi_tx_n[1]. (constraint file  /afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.gen/sources_1/ip/hdmi_tx_0/hdmi_tx_0/hdmi_tx_0_in_context.xdc, line 8).
+Applied set_property IO_BUFFER_TYPE = NONE for hdmi_tx_n[2]. (constraint file  /afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.gen/sources_1/ip/hdmi_tx_0/hdmi_tx_0/hdmi_tx_0_in_context.xdc, line 9).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for hdmi_tx_n[2]. (constraint file  /afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.gen/sources_1/ip/hdmi_tx_0/hdmi_tx_0/hdmi_tx_0_in_context.xdc, line 10).
+Applied set_property IO_BUFFER_TYPE = NONE for hdmi_tx_p[0]. (constraint file  /afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.gen/sources_1/ip/hdmi_tx_0/hdmi_tx_0/hdmi_tx_0_in_context.xdc, line 11).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for hdmi_tx_p[0]. (constraint file  /afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.gen/sources_1/ip/hdmi_tx_0/hdmi_tx_0/hdmi_tx_0_in_context.xdc, line 12).
+Applied set_property IO_BUFFER_TYPE = NONE for hdmi_tx_p[1]. (constraint file  /afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.gen/sources_1/ip/hdmi_tx_0/hdmi_tx_0/hdmi_tx_0_in_context.xdc, line 13).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for hdmi_tx_p[1]. (constraint file  /afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.gen/sources_1/ip/hdmi_tx_0/hdmi_tx_0/hdmi_tx_0_in_context.xdc, line 14).
+Applied set_property IO_BUFFER_TYPE = NONE for hdmi_tx_p[2]. (constraint file  /afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.gen/sources_1/ip/hdmi_tx_0/hdmi_tx_0/hdmi_tx_0_in_context.xdc, line 15).
+Applied set_property CLOCK_BUFFER_TYPE = NONE for hdmi_tx_p[2]. (constraint file  /afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.gen/sources_1/ip/hdmi_tx_0/hdmi_tx_0/hdmi_tx_0_in_context.xdc, line 16).
+Applied set_property KEEP_HIERARCHY = SOFT for clk_wiz. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for vga_to_hdmi. (constraint file  auto generated constraint).
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 2393.648 ; gain = 669.211 ; free physical = 5832 ; free virtual = 36224
+---------------------------------------------------------------------------------
+INFO: [Synth 8-802] inferred FSM for state register 'currState_reg' in module 'systemFSM'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                    WAIT |                          0000001 |                              000
+                INSERTED |                          0000010 |                              001
+                 ENTERED |                          0000100 |                              010
+                   START |                          0001000 |                              011
+                GAME_WON |                          0010000 |                              101
+               GAME_LOST |                          0100000 |                              110
+                 GRADING |                          1000000 |                              100
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'currState_reg' using encoding 'one-hot' in module 'systemFSM'
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 2393.648 ; gain = 669.211 ; free physical = 5906 ; free virtual = 36302
+---------------------------------------------------------------------------------
+INFO: [Synth 8-223] decloning instance 'mmVGA/numDrawer/segCheckX0' (offset_check) to 'mmVGA/numDrawer/segCheckX3'
+INFO: [Synth 8-223] decloning instance 'mmVGA/numDrawer/segCheckX0' (offset_check) to 'mmVGA/numDrawer/segCheckX6'
+INFO: [Synth 8-223] decloning instance 'mmVGA/numDrawer/segCheckX1' (offset_check) to 'mmVGA/numDrawer/segCheckX2'
+INFO: [Synth 8-223] decloning instance 'mmVGA/numDrawer/segCheckY1' (offset_check) to 'mmVGA/numDrawer/segCheckY5'
+INFO: [Synth 8-223] decloning instance 'mmVGA/numDrawer/segCheckY2' (offset_check) to 'mmVGA/numDrawer/segCheckY4'
+INFO: [Synth 8-223] decloning instance 'mmVGA/numDrawer/segCheckX4' (offset_check) to 'mmVGA/numDrawer/segCheckX5'
+INFO: [Synth 8-223] decloning instance 'mmVGA/zzDrawer/squareCheckX0' (offset_check) to 'mmVGA/zzDrawer/squareCheckX2'
+INFO: [Synth 8-223] decloning instance 'mmVGA/zzDrawer/squareCheckY0' (offset_check) to 'mmVGA/zzDrawer/squareCheckY1'
+INFO: [Synth 8-223] decloning instance 'mmVGA/zzDrawer/squareCheckX1' (offset_check) to 'mmVGA/zzDrawer/squareCheckX3'
+INFO: [Synth 8-223] decloning instance 'mmVGA/zzDrawer/squareCheckY2' (offset_check) to 'mmVGA/zzDrawer/squareCheckY3'
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input   11 Bit       Adders := 3     
+	   3 Input   11 Bit       Adders := 18    
+	   2 Input   10 Bit       Adders := 34    
+	   2 Input    9 Bit       Adders := 1     
+	   2 Input    8 Bit       Adders := 7     
+	   3 Input    6 Bit       Adders := 2     
+	   3 Input    5 Bit       Adders := 10    
+	   2 Input    4 Bit       Adders := 1     
+	   2 Input    2 Bit       Adders := 2     
++---Registers : 
+	               11 Bit    Registers := 1     
+	               10 Bit    Registers := 1     
+	                5 Bit    Registers := 1     
+	                4 Bit    Registers := 18    
+	                3 Bit    Registers := 40    
+	                2 Bit    Registers := 1     
+	                1 Bit    Registers := 2     
++---Muxes : 
+	   2 Input   24 Bit        Muxes := 6     
+	   2 Input   11 Bit        Muxes := 1     
+	   2 Input   10 Bit        Muxes := 1     
+	   2 Input    8 Bit        Muxes := 17    
+	   4 Input    8 Bit        Muxes := 2     
+	   7 Input    7 Bit        Muxes := 1     
+	   2 Input    7 Bit        Muxes := 8     
+	   2 Input    5 Bit        Muxes := 1     
+	   2 Input    4 Bit        Muxes := 6     
+	   7 Input    3 Bit        Muxes := 1     
+	   4 Input    3 Bit        Muxes := 3     
+	   2 Input    3 Bit        Muxes := 2     
+	   2 Input    2 Bit        Muxes := 4     
+	   2 Input    1 Bit        Muxes := 34    
+	   7 Input    1 Bit        Muxes := 10    
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 120 (col length:60)
+BRAMs: 150 (col length: RAMB18 60 RAMB36 30)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+WARNING: [Synth 8-3917] design ChipInterface has port D1_SEG[7] driven by constant 1
+WARNING: [Synth 8-3917] design ChipInterface has port D1_SEG[6] driven by constant 1
+WARNING: [Synth 8-3917] design ChipInterface has port D1_SEG[5] driven by constant 1
+WARNING: [Synth 8-3917] design ChipInterface has port D1_SEG[4] driven by constant 1
+WARNING: [Synth 8-3917] design ChipInterface has port D1_SEG[3] driven by constant 1
+WARNING: [Synth 8-3917] design ChipInterface has port D1_SEG[2] driven by constant 1
+WARNING: [Synth 8-3917] design ChipInterface has port D1_SEG[1] driven by constant 1
+WARNING: [Synth 8-3917] design ChipInterface has port D1_SEG[0] driven by constant 1
+WARNING: [Synth 8-7129] Port LD[12] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LD[11] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LD[10] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LD[9] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LD[8] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LD[7] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LD[6] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LD[5] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LD[4] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LD[3] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LD[2] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LD[1] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SW[13] in module ChipInterface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port SW[12] in module ChipInterface is either unconnected or has no load
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:18 ; elapsed = 00:00:19 . Memory (MB): peak = 2393.648 ; gain = 669.211 ; free physical = 5912 ; free virtual = 36319
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:20 ; elapsed = 00:00:22 . Memory (MB): peak = 2421.648 ; gain = 697.211 ; free physical = 5866 ; free virtual = 36273
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:26 ; elapsed = 00:00:27 . Memory (MB): peak = 2630.133 ; gain = 905.695 ; free physical = 5655 ; free virtual = 36062
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:26 ; elapsed = 00:00:27 . Memory (MB): peak = 2630.133 ; gain = 905.695 ; free physical = 5653 ; free virtual = 36060
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:28 ; elapsed = 00:00:29 . Memory (MB): peak = 2733.914 ; gain = 1009.477 ; free physical = 5566 ; free virtual = 35973
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:28 ; elapsed = 00:00:29 . Memory (MB): peak = 2733.914 ; gain = 1009.477 ; free physical = 5566 ; free virtual = 35973
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:28 ; elapsed = 00:00:29 . Memory (MB): peak = 2733.914 ; gain = 1009.477 ; free physical = 5566 ; free virtual = 35973
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:28 ; elapsed = 00:00:29 . Memory (MB): peak = 2733.914 ; gain = 1009.477 ; free physical = 5566 ; free virtual = 35973
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:28 ; elapsed = 00:00:29 . Memory (MB): peak = 2733.914 ; gain = 1009.477 ; free physical = 5566 ; free virtual = 35973
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:28 ; elapsed = 00:00:29 . Memory (MB): peak = 2733.914 ; gain = 1009.477 ; free physical = 5566 ; free virtual = 35973
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++------+--------------+----------+
+|      |BlackBox name |Instances |
++------+--------------+----------+
+|1     |clk_wiz_0     |         1|
+|2     |hdmi_tx_0     |         1|
++------+--------------+----------+
+
+Report Cell Usage: 
++------+--------+------+
+|      |Cell    |Count |
++------+--------+------+
+|1     |clk_wiz |     1|
+|2     |hdmi_tx |     1|
+|3     |CARRY4  |   111|
+|4     |LUT1    |    34|
+|5     |LUT2    |   181|
+|6     |LUT3    |   104|
+|7     |LUT4    |   147|
+|8     |LUT5    |   141|
+|9     |LUT6    |   307|
+|10    |MUXF7   |     7|
+|11    |FDCE    |   193|
+|12    |FDPE    |     1|
+|13    |FDRE    |    35|
+|14    |IBUF    |    18|
+|15    |OBUF    |    28|
+|16    |OBUFT   |    12|
++------+--------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:28 ; elapsed = 00:00:29 . Memory (MB): peak = 2733.914 ; gain = 1009.477 ; free physical = 5566 ; free virtual = 35973
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 23 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:27 ; elapsed = 00:00:28 . Memory (MB): peak = 2733.914 ; gain = 870.730 ; free physical = 5566 ; free virtual = 35973
+Synthesis Optimization Complete : Time (s): cpu = 00:00:28 ; elapsed = 00:00:29 . Memory (MB): peak = 2733.922 ; gain = 1009.477 ; free physical = 5566 ; free virtual = 35973
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 2733.922 ; gain = 0.000 ; free physical = 5727 ; free virtual = 36135
+INFO: [Netlist 29-17] Analyzing 118 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-140] Inserted 1 IBUFs to IO ports without IO buffers.
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2789.941 ; gain = 0.000 ; free physical = 6686 ; free virtual = 36137
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Synth Design complete | Checksum: c3d3593b
+INFO: [Common 17-83] Releasing license: Synthesis
+108 Infos, 64 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:32 ; elapsed = 00:00:32 . Memory (MB): peak = 2789.941 ; gain = 1237.000 ; free physical = 6685 ; free virtual = 36137
+INFO: [Common 17-2834] synth_design peak Physical Memory [PSS] (MB): overall = 1926.517; main = 1926.517; forked = 274.784
+INFO: [Common 17-2834] synth_design peak Virtual Memory [VSS] (MB): overall = 3332.148; main = 2789.945; forked = 938.496
+Write ShapeDB Complete: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2813.953 ; gain = 0.000 ; free physical = 6686 ; free virtual = 36138
+INFO: [Common 17-1381] The checkpoint '/afs/andrew.cmu.edu/usr14/spreda/private/18240/Lab4/Lab4-18240/Lab4-18240.runs/synth_1/ChipInterface.dcp' has been generated.
+INFO: [Vivado 12-24828] Executing command : report_utilization -file ChipInterface_utilization_synth.rpt -pb ChipInterface_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Tue Mar 24 17:11:15 2026...

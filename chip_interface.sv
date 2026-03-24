@@ -81,17 +81,23 @@ module ChipInterface (
 
     //connect to input fpga using assign
     assign CoinValue = SW[15:14];
-    assign CoinInserted = BTN[1];
-    assign StartGame = BTN[2];
     assign Guess = SW[11:0];
-    assign GradeIt = BTN[3];
+    assign LoadShapeNow = GradeIt;
     assign LoadShape = SW[2:0];
     assign ShapeLocation = SW[4:3];
-    assign LoadShapeNow = BTN[3];
-    assign reset = BTN[0];
     assign clock = CLOCK_100;
-    assign LD[0] = GameWonLED;
+    assign LD[0] = gameWonLED;
     assign LD[15:13] = outputState;
+
+    //Synchronizer
+
+    Synchronizer syncBTN0 (.async(BTN[0]), .clock, .sync(reset));
+
+    Synchronizer syncBTN1 (.async(BTN[1]), .clock, .sync(CoinInserted));
+
+    Synchronizer syncBTN2 (.async(BTN[2]), .clock, .sync(StartGame));
+
+    Synchronizer syncBTN3 (.async(BTN[3]), .clock, .sync(GradeIt));
 
 /*
  *  BEWARE CHANGING CODE BELOW THIS LINE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
