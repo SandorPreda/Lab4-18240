@@ -122,7 +122,6 @@ module systemFSM (
           R_en_grader = 1;
           R_clear_grader = 0;
           LoadGuess = 1;
-          LoadZnarlyZood = 1;
         end
 
         // Else, wait in this state until GradeIt is asserted
@@ -139,8 +138,9 @@ module systemFSM (
         // Loop if remains asserted
         if (GradeIt) begin
           nextState = GRADING;
-          R_en_grader = 0;
+          R_en_grader = 1;
           R_clear_grader = 0;
+          LoadZnarlyZood = 1;
         end
 
         else if (GameWon) begin
@@ -151,11 +151,11 @@ module systemFSM (
           R_en_grader = 0;
         end
 
-        else begin
+        else if (~GradeIt) begin
           nextState = START;
           another_round = 1;
           R_en_grader = 0;
-          R_clear_grader = 0;
+          R_clear_grader = 1;
         end
       end
     endcase
