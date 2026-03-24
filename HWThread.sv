@@ -23,7 +23,7 @@ module systemFSM (
   input logic GradeIt, GameWon,
   input logic CoinInserted);
 
-  assign outputState = currState;
+  
 
   enum logic [2:0] {
     WAIT = 3'b000,
@@ -32,6 +32,8 @@ module systemFSM (
     START = 3'b011,
     GRADING = 3'b100
     } currState, nextState;
+
+  assign outputState = currState;
 
   // Sequential logic for state transitions and ouputs
   always_comb begin      
