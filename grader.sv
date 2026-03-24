@@ -1,6 +1,9 @@
 // `default_nettype none;
 
 module Grader
+  // This module implements the Grader module, the module that checks whether a
+  // given 12-bit guess is Znarly or Zood. The module follows the Wordle rules
+  // and ensures that the output is only True when GradeIt is asserted.
   (input logic [11:0] Guess,
    input logic GradeIt, clock, reset,
    output logic [3:0] Zood, Znarly);
@@ -153,6 +156,7 @@ module Grader
     endcase
   end
 
+  // Sequential logic to drive the next state logic
   always_ff @(posedge clock, posedge reset)
     if (reset)
       currState = START;
@@ -162,6 +166,9 @@ module Grader
 endmodule: Grader
 
 module Grader_woFSM
+  // This module implements the Grader module except that the FSM is now being
+  // driven by an external module instead of internally. This allows for the
+  // integration of the Grader with the rest of the datapath.
   (input logic [11:0] Guess,
    input logic clock, reset, GradeIt,
    input logic R_en, R_clear,
@@ -289,142 +296,146 @@ module Grader_woFSM
   Adder #(4) A9(.A(A6_out), .B(A7_out), .cin(1'b0), .sum(A9_out), .cout());
   Adder #(4) A10(.A(A8_out), .B(A9_out), .cin(1'b0), .sum(Zood_sum), .cout());
 
+  // Extra logic ensures that Znarly and Zood are asserted with GradeIt
   assign Znarly = Znarly_sum & {GradeIt, GradeIt, GradeIt};
   assign Zood = Zood_sum & {GradeIt, GradeIt, GradeIt};
 
 endmodule: Grader_woFSM
 
-// module GraderTest;
-//   logic [11:0] Guess;
-//   logic GradeIt, reset;
-//   logic [3:0] Znarly, Zood;
-//   // logic clock;
+module GraderTest;
+  // This module is a GraderTest that comprehensively tests a bunch of
+  // guesses for a master pattern, checking whether or not the Worldle
+  // rules are being followed.
 
-//   logic clock;
-//   initial begin
-//     clock = 0;
-//     forever #5 clock = ~clock;
-//   end
-
-//   enum logic [2:0] {
-//     T = 3'b001,
-//     C = 3'b010,
-//     O = 3'b011,
-//     D = 3'b100,
-//     I = 3'b101,
-//     Z = 3'b110
-//   } firstShape, secondShape, thirdShape, fourthShape;
-
-//   assign Guess = {firstShape, secondShape, thirdShape, fourthShape};
-
-//   Grader DUT(.clock(clock), .*);
-
-//   initial begin
-//     $monitor($time,, "reset=%b|Zood=%d|Znarly=%d",
-//              reset, Zood, Znarly);
-//     // Initialize variables
-//     reset <= 1;
-//     GradeIt <= 0;
-//     {firstShape, secondShape, thirdShape, fourthShape} <= {T, T, T, D};
-//     @(posedge clock);
-
-//     // Release reset
-//     #5 reset <= 0;
-//     @(posedge clock);
-
-//     // Here, Zoog and Znarly should be 0 since GradeIt is not asserted
-//     @(posedge clock);
-//     @(posedge clock);
-//     @(posedge clock);
-//     @(posedge clock);
-//     @(posedge clock);
-
-//     // Test 1: Master: TTDO, Guess: TTTD (1 Zood, 2 Znarly) works
-//     #5 GradeIt <= 1;
-//     @(posedge clock);
-//     @(posedge clock);
-//     @(posedge clock);
-//     @(posedge clock);
-//     @(posedge clock);
-//     #5 GradeIt <= 0;
-
-//     // Zoog and Znarly should go back to 0 here once GradeIt gets deasserted
-//     @(posedge clock);
-//     @(posedge clock);
-//     @(posedge clock);
-//     @(posedge clock);
-
-//     // Test 2: Master: TTDO, Guess: CCCC (0 Zood, 0 Znarly)
-//     #5 GradeIt <= 1;
-//     {firstShape, secondShape, thirdShape, fourthShape} <= {C, C, C, C};
-//     @(posedge clock);
-//     @(posedge clock);
-//     #5 GradeIt <= 0;
-//     @(posedge clock);
-//     @(posedge clock);
-
-//     // Test 3: Master: TTDO, Guess: TDOT (3 Zood, 1 Znarly) 
-//     #5 GradeIt <= 1;
-//     {firstShape, secondShape, thirdShape, fourthShape} <= {T, D, O, T};
-//     @(posedge clock);
-//     @(posedge clock);
-//     #5 GradeIt <= 0;
-//     @(posedge clock);
-//     @(posedge clock);
-
-//     // Test 4: Master: TTDO, Guess: TTTT (0 Zood, 2 Znarly)
-//     #5 GradeIt <= 1;
-//     {firstShape, secondShape, thirdShape, fourthShape} <= {T, T, T, T};
-//     @(posedge clock);
-//     @(posedge clock);
-//     #5 GradeIt <= 0;
-//     @(posedge clock);
-//     @(posedge clock);
+  logic [11:0] Guess;
+  logic GradeIt, reset;
+  logic [3:0] Znarly, Zood;
+  logic clock;
   
-//     // Test 5: Master: TTDO, Guess: ODTT (4 Zood, 0 Znarly)
-//     #5 GradeIt <= 1;
-//     {firstShape, secondShape, thirdShape, fourthShape} <= {O, D, T, T};
-//     @(posedge clock);
-//     @(posedge clock);
-//     #5 GradeIt <= 0;
-//     @(posedge clock);
-//     @(posedge clock);
+  initial begin
+    clock = 0;
+    forever #5 clock = ~clock;
+  end
 
-//     // Test 6: Master: TTDO, Guess: TOOO (0 Zood, 2 Znarly)
-//     #5 GradeIt <= 1;
-//     {firstShape, secondShape, thirdShape, fourthShape} <= {T, O, O, O};
-//     @(posedge clock);
-//     #5 GradeIt <= 0;
-//     @(posedge clock);
+  enum logic [2:0] {
+    T = 3'b001,
+    C = 3'b010,
+    O = 3'b011,
+    D = 3'b100,
+    I = 3'b101,
+    Z = 3'b110
+  } firstShape, secondShape, thirdShape, fourthShape;
 
-//     // Test 7: Master: TTDO, Guess: DOTT (4 Zood, 0 Znarly)
-//     #5 GradeIt <= 1;
-//     {firstShape, secondShape, thirdShape, fourthShape} <= {D, O, T, T};
-//     @(posedge clock);
-//     #5 GradeIt <= 0;
-//     @(posedge clock);
+  assign Guess = {firstShape, secondShape, thirdShape, fourthShape};
 
-//     // Test 8: Master: TTDO, Guess: DDDD (0 Zood, 1 Znarly)
-//     #5 GradeIt <= 1;
-//     {firstShape, secondShape, thirdShape, fourthShape} <= {D, D, D, D};
-//     @(posedge clock);
-//     #5 GradeIt <= 0;
-//     @(posedge clock);
+  Grader DUT(.clock(clock), .*);
 
-//     // Test 9: Master: TTDO, Guess: OOOT (2 Zood, 0 Znarly)
-//     #5 GradeIt <= 1;
-//     {firstShape, secondShape, thirdShape, fourthShape} <= {O, O, O, T};
-//     @(posedge clock);
-//     #5 GradeIt <= 0;
-//     @(posedge clock);
+  initial begin
+    $monitor($time,, "reset=%b|Zood=%d|Znarly=%d",
+             reset, Zood, Znarly);
+    // Initialize variables
+    reset <= 1;
+    GradeIt <= 0;
+    {firstShape, secondShape, thirdShape, fourthShape} <= {T, T, T, D};
+    @(posedge clock);
 
-//     // Test 10: Master: TTDO, Guess: TOTT (2 Zood, 1 Znarly)
-//     #5 GradeIt <= 1;
-//     {firstShape, secondShape, thirdShape, fourthShape} <= {T, O, T, T};
-//     @(posedge clock);
-//     #5 GradeIt <= 0;
-//     @(posedge clock);
-//     #10 $finish;
-//   end
+    // Release reset
+    #5 reset <= 0;
+    @(posedge clock);
 
-// endmodule: GraderTest
+    // Here, Zoog and Znarly should be 0 since GradeIt is not asserted
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+
+    // Test 1: Master: TTDO, Guess: TTTD (1 Zood, 2 Znarly) works
+    #5 GradeIt <= 1;
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    #5 GradeIt <= 0;
+
+    // Zoog and Znarly should go back to 0 here once GradeIt gets deasserted
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+
+    // Test 2: Master: TTDO, Guess: CCCC (0 Zood, 0 Znarly)
+    #5 GradeIt <= 1;
+    {firstShape, secondShape, thirdShape, fourthShape} <= {C, C, C, C};
+    @(posedge clock);
+    @(posedge clock);
+    #5 GradeIt <= 0;
+    @(posedge clock);
+    @(posedge clock);
+
+    // Test 3: Master: TTDO, Guess: TDOT (3 Zood, 1 Znarly) 
+    #5 GradeIt <= 1;
+    {firstShape, secondShape, thirdShape, fourthShape} <= {T, D, O, T};
+    @(posedge clock);
+    @(posedge clock);
+    #5 GradeIt <= 0;
+    @(posedge clock);
+    @(posedge clock);
+
+    // Test 4: Master: TTDO, Guess: TTTT (0 Zood, 2 Znarly)
+    #5 GradeIt <= 1;
+    {firstShape, secondShape, thirdShape, fourthShape} <= {T, T, T, T};
+    @(posedge clock);
+    @(posedge clock);
+    #5 GradeIt <= 0;
+    @(posedge clock);
+    @(posedge clock);
+  
+    // Test 5: Master: TTDO, Guess: ODTT (4 Zood, 0 Znarly)
+    #5 GradeIt <= 1;
+    {firstShape, secondShape, thirdShape, fourthShape} <= {O, D, T, T};
+    @(posedge clock);
+    @(posedge clock);
+    #5 GradeIt <= 0;
+    @(posedge clock);
+    @(posedge clock);
+
+    // Test 6: Master: TTDO, Guess: TOOO (0 Zood, 2 Znarly)
+    #5 GradeIt <= 1;
+    {firstShape, secondShape, thirdShape, fourthShape} <= {T, O, O, O};
+    @(posedge clock);
+    #5 GradeIt <= 0;
+    @(posedge clock);
+
+    // Test 7: Master: TTDO, Guess: DOTT (4 Zood, 0 Znarly)
+    #5 GradeIt <= 1;
+    {firstShape, secondShape, thirdShape, fourthShape} <= {D, O, T, T};
+    @(posedge clock);
+    #5 GradeIt <= 0;
+    @(posedge clock);
+
+    // Test 8: Master: TTDO, Guess: DDDD (0 Zood, 1 Znarly)
+    #5 GradeIt <= 1;
+    {firstShape, secondShape, thirdShape, fourthShape} <= {D, D, D, D};
+    @(posedge clock);
+    #5 GradeIt <= 0;
+    @(posedge clock);
+
+    // Test 9: Master: TTDO, Guess: OOOT (2 Zood, 0 Znarly)
+    #5 GradeIt <= 1;
+    {firstShape, secondShape, thirdShape, fourthShape} <= {O, O, O, T};
+    @(posedge clock);
+    #5 GradeIt <= 0;
+    @(posedge clock);
+
+    // Test 10: Master: TTDO, Guess: TOTT (2 Zood, 1 Znarly)
+    #5 GradeIt <= 1;
+    {firstShape, secondShape, thirdShape, fourthShape} <= {T, O, T, T};
+    @(posedge clock);
+    #5 GradeIt <= 0;
+    @(posedge clock);
+    #10 $finish;
+  end
+
+endmodule: GraderTest
