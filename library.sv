@@ -24,16 +24,6 @@ module BarrelShifter
 
 endmodule: BarrelShifter
 
-module MultibitMultiplexer
-   #(parameter BITWIDTH = 8, parameter OPTIONS = 8)
-   (input logic  [(BITWIDTH*OPTIONS)-1:0] I,
-    input logic [$clog2(OPTIONS)-1:0] S,
-    output logic [BITWIDTH-1:0] Y);
-
-    assign Y = I[BITWIDTH*S +: BITWIDTH];
-
-endmodule: MultibitMultiplexer
-
 module Multiplexer
    #(parameter WIDTH = 8)
    (input logic  [WIDTH-1:0] I,
@@ -53,6 +43,18 @@ module Mux2to1
     assign Y = (S) ? I1 : I0;
 
 endmodule: Mux2to1
+
+module Mux4to1
+   #(parameter WIDTH = 8)
+   (input logic [1:0] S,
+    input logic [WIDTH-1:0] I0, I1, I2, I3,
+    output logic [WIDTH-1:0] Y);
+
+    assign Y = (S == 2'b00) ? I0 :
+               (S == 2'b01) ? I1 :
+               (S == 2'b10) ? I2 : I3;
+
+endmodule: Mux4to1
 
 module MagComp
    #(parameter WIDTH = 8)
