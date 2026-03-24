@@ -3,7 +3,6 @@
 module HWThreadTest;
     // Control points
     logic add_or_sub;
-    logic cv_cl, cv_en;
     logic tc_en;
     logic another_round;
     logic shape_reset;
