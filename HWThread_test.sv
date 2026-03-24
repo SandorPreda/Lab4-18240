@@ -153,8 +153,6 @@ module HWThreadTest;
     @(posedge clock);
     @(posedge clock);
 
-    #5 $finish;
-
     // First Guess: TTTD (1 Zood, 2 Znarly)
     @(posedge clock);
     {firstGuess, secondGuess, thirdGuess, fourthGuess} <= {T, T, T, D};
@@ -169,6 +167,8 @@ module HWThreadTest;
     @(posedge clock);
     @(posedge clock);
     @(posedge clock);
+
+    #5 $finish;
 
     // Second Guess: ODTT (4 Zood, 0 Znarly)
     @(posedge clock);
