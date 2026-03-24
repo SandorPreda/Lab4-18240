@@ -111,12 +111,12 @@ module systemFSM (
 
       START: begin
         // If the game is won and done, reset everything
-        if (GameWon) begin
+        if (GameWon & ~GradeIt) begin
           nextState = GAME_WON;
           R_clear_grader = 1;
         end
 
-        else if (gamedone) begin
+        else if (gamedone & ~GradeIt) begin
           R_clear_grader = 1;
           nextState = GAME_LOST;
         end
@@ -150,7 +150,7 @@ module systemFSM (
         end
 
         else if (GameWon) begin
-          nextState = WAIT;
+          nextState = GAME_WON;
           shape_reset = 1;
           ClearGame = 1;
           R_clear_grader = 1;
@@ -167,15 +167,17 @@ module systemFSM (
 
       GAME_WON: begin
         if (GradeIt)
-          nextState = START;
+          nextState = WAIT;
           shape_reset = 1;
           ClearGame = 1;
-          gameWonLED = 1; // SHOULD BE OUTPUT?
+        else begin
+          gameWonLED = 1;
+        end
       end
 
       GAME_LOST: begin
         if (GradeIt)
-          nextState = START;
+          nextState = WAIT;
           shape_reset = 1;
           ClearGame = 1;
           gameWonLED = 0; // ####
