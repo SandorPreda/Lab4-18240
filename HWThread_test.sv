@@ -30,7 +30,7 @@ module HWThreadTest;
 
     logic LoadNumGames, LoadGuess, ClearGame;
     logic DisplayMasterPattern, LoadZnarlyZood;
-    logic outputState;
+    logic [2:0] outputState;
 
 
     //FSM

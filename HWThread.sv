@@ -99,6 +99,7 @@ module systemFSM (
           nextState = START;
           R_en_grader = 0;
           R_clear_grader = 1;
+          DisplayMasterPattern = 0;
         end
 
         // Else, stay to load the master pattern
