@@ -64,6 +64,7 @@ module systemFSM (
           add_or_sub = 0;
           tc_en = 1;
           LoadNumGames = 1;
+          shape_reset = 1;
         end
       end
 

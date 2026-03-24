@@ -98,7 +98,7 @@ module HWThreadTest;
     @(posedge clock);
     @(posedge clock);
     @(posedge clock);
-    #5 $finish;
+    
 
 
     // Starting the game... (NumGames = 2)
@@ -108,9 +108,12 @@ module HWThreadTest;
 
     ShapeLocation <= 2'd0; // Loading the 0th index of the master pattern
     LoadShape <= 3'b011; // O
+    LoadShapeNow <= 1;
     @(posedge clock);
     @(posedge clock);
     @(posedge clock);
+    
+    #5 $finish;
 
     ShapeLocation <= 2'd1; // Loading the 1st index of the master pattern
     LoadShape <= 3'b100; // D
