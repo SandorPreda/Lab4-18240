@@ -125,7 +125,15 @@ module systemFSM (
 
       GRADING: begin
         // Grade the round
-        if (~GradeIt) begin
+        if (GameWon) begin
+          nextState = WAIT;
+          shape_reset = 1;
+          ClearGame = 1;
+          R_clear_grader = 1;
+          R_en_grader = 0;
+        end
+
+        else if (~GradeIt) begin
           nextState = START;
           another_round = 1;
           R_en_grader = 0;

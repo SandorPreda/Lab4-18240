@@ -103,6 +103,8 @@ module HWThreadTest;
 
     // Starting the game... (NumGames = 2)
     StartGame <= 1;
+    @(posedge clock);
+    StartGame <= 0;
     LoadShapeNow <= 1;
     @(posedge clock);
 
@@ -186,7 +188,6 @@ module HWThreadTest;
     @(posedge clock);
     @(posedge clock);
    
-    #5 $finish;
 
     // Final Guess: TTDO (0 Zood, 4 Znarly)
     @(posedge clock);
@@ -202,6 +203,8 @@ module HWThreadTest;
     @(posedge clock);
     @(posedge clock);
     @(posedge clock);
+
+    #5 $finish;
 
     // Now return to the initial state
     @(posedge clock);
