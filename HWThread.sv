@@ -277,7 +277,7 @@ module mainHardware(
   assign MasterPattern = {shape1Q, shape2Q, shape3Q, shape4Q};
 
   Grader_woFSM grader (.Guess, .clock, .reset, .R_en(R_en_grader),
-                       .R_clear(R_clear_grader), .Zood, .Znarly,
+                       .R_clear(R_clear_grader), .GradeIt, .Zood, .Znarly,
                        .MasterPattern(MasterPattern));
 
 endmodule: mainHardware
