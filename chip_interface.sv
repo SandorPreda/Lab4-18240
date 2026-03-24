@@ -51,6 +51,7 @@ module ChipInterface (
     logic clock;
     logic GradeIt, GameWon;
     logic CoinInserted;
+    logic count_cl;
 
     //other pieces
     logic [1:0] CoinValue;
@@ -67,6 +68,9 @@ module ChipInterface (
     //!!! WE CAN CHANGE THAT BUT USE IT NOW FOR DEBUGGING!!!
     logic LoadNumGames, LoadGuess, ClearGame;
     logic DisplayMasterPattern, LoadZnarlyZood;
+
+    //state Transistions
+    logic [2:0] currState;
 
     //FSM
     systemFSM fsm (.add_or_sub, 
@@ -105,6 +109,8 @@ module ChipInterface (
     assign LoadShapeNow = BTN[3];
     assign reset = BTN[0];
     assign clock = CLOCK_100;
+    assign LD[0] = GameWon;
+    assign LD[15:13] = currState;
 
 /*
  *  BEWARE CHANGING CODE BELOW THIS LINE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

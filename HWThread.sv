@@ -8,6 +8,7 @@ module systemFSM (
   output logic shape_reset, 
   output logic R_en_grader, R_clear_grader,
   output logic count_cl,
+  output logic currState,
 
   //For VGA only
   output logic LoadNumGames, LoadGuess, ClearGame,
@@ -23,11 +24,11 @@ module systemFSM (
   input logic CoinInserted);
 
   enum logic [2:0] {
-    WAIT,
-    INSERTED,
-    ENTERED,
-    START,
-    GRADING
+    WAIT = 3'b000,
+    INSERTED = 3'b001,
+    ENTERED = 3'b010,
+    START = 3'b011,
+    GRADING = 3'b100
     } currState, nextState;
 
   // Sequential logic for state transitions and ouputs
@@ -82,6 +83,7 @@ module systemFSM (
         else begin
            nextState = INSERTED;
            add_or_sub = 1;
+           LoadNumGames = 1;
         end
       end
 
