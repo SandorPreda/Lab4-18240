@@ -195,19 +195,12 @@ module mainHardware(
                                      .Q(total_coins));
 
   // Calculating the NumGames count
-  logic [4:0] shifter_out;
+  
+  assign NumGames = total_out[4:2];
 
-  BarrelShiftRegister #(5) barrelshifter (.clock(clock), .en(1'd1), .load(1'd1),
-                                          .by(2'b10), .D(total_coins),
-                                          .Q(shifter_out));
-  assign NumGames = shifter_out[3:0];
 
-  logic inserted_async;
+  assign CoinInserted = CoinValue[1] | CoinValue[0];
 
-  assign inserted_async = CoinValue[1] | CoinValue[0];
-
-  Synchronizer insert_synchronizer (.clock(clock), .async(inserted_async),
-                                    .sync(CoinInserted));
 
   logic enough_games;
 
