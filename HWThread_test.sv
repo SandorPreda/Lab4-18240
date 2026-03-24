@@ -189,6 +189,144 @@ module HWThreadTest;
     @(posedge clock);
     @(posedge clock);
    
+    // Third Guess: TTTD (1 Zood, 2 Znarly)
+    @(posedge clock);
+    {firstGuess, secondGuess, thirdGuess, fourthGuess} <= {T, T, T, D};
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    GradeIt <= 1;
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    GradeIt <= 0;
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+
+
+    // Fourth Guess: ODTT (4 Zood, 0 Znarly)
+    @(posedge clock);
+    {firstGuess, secondGuess, thirdGuess, fourthGuess} <= {O, D, T, T};
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    GradeIt <= 1;
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    GradeIt <= 0;
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+
+    // Third Guess: TTTD (1 Zood, 2 Znarly)
+    @(posedge clock);
+    {firstGuess, secondGuess, thirdGuess, fourthGuess} <= {T, T, T, D};
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    GradeIt <= 1;
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    GradeIt <= 0;
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+
+
+    // Fourth Guess: ODTT (4 Zood, 0 Znarly)
+    @(posedge clock);
+    {firstGuess, secondGuess, thirdGuess, fourthGuess} <= {O, D, T, T};
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    GradeIt <= 1;
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    GradeIt <= 0;
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+
+    // Fifth Guess: TTTD (1 Zood, 2 Znarly)
+    @(posedge clock);
+    {firstGuess, secondGuess, thirdGuess, fourthGuess} <= {T, T, T, D};
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    GradeIt <= 1;
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    GradeIt <= 0;
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+
+
+    // Sixth Guess: ODTT (4 Zood, 0 Znarly)
+    @(posedge clock);
+    {firstGuess, secondGuess, thirdGuess, fourthGuess} <= {O, D, T, T};
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    GradeIt <= 1;
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    GradeIt <= 0;
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+
+    // Seventh Guess: TTTD (1 Zood, 2 Znarly)
+    @(posedge clock);
+    {firstGuess, secondGuess, thirdGuess, fourthGuess} <= {T, T, T, D};
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    GradeIt <= 1;
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    GradeIt <= 0;
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+
+
+    // Eighth Guess: ODTT (4 Zood, 0 Znarly)
+    @(posedge clock);
+    {firstGuess, secondGuess, thirdGuess, fourthGuess} <= {O, D, T, T};
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    GradeIt <= 1;
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    GradeIt <= 0;
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+
+    // Nine Guess: TTTD (1 Zood, 2 Znarly) Should not get here
+    @(posedge clock);
+    {firstGuess, secondGuess, thirdGuess, fourthGuess} <= {T, T, T, D};
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    GradeIt <= 1;
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
+    GradeIt <= 0;
+    @(posedge clock);
+    @(posedge clock);
+    @(posedge clock);
 
     // Final Guess: TTDO (0 Zood, 4 Znarly)
     @(posedge clock);
