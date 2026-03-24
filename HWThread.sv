@@ -27,6 +27,7 @@ module systemFSM (
   input logic CoinInserted,
   input logic exitGame);
 
+  //State enum logic
   enum logic [2:0] {
     WAIT = 3'b000,
     INSERTED = 3'b001,
@@ -41,6 +42,7 @@ module systemFSM (
 
   // Sequential logic for state transitions and ouputs
   always_comb begin      
+
     // Default outputs
     add_or_sub = 1;
     tc_en = 0;
@@ -56,7 +58,7 @@ module systemFSM (
     count_cl = 0;
     gameWonLED = 0;
 
-    // FIX: when shapes are being loaded, anzarly and zood shouldnt be displaayed
+
     // FSM control logic
     // Default state: remain in current state
     nextState = currState;
@@ -147,7 +149,7 @@ module systemFSM (
           R_clear_grader = 1;
           R_en_grader = 0;
         end
-
+        
         else if (GradeIt) begin
           nextState = GRADING;
           R_en_grader = 1;
@@ -165,6 +167,7 @@ module systemFSM (
       end
 
       GAME_WON: begin
+        //go back to waitstate when the switch13 is on
         if (exitGame) begin
           nextState = WAIT;
           shape_reset = 1;
@@ -175,8 +178,10 @@ module systemFSM (
           ClearGame = 1;
         end
       end
-
+      
+      
       GAME_LOST: begin
+      //go back to waitstate when switch13 is on
         if (exitGame) begin
           nextState = WAIT;
           shape_reset = 1;
@@ -190,6 +195,7 @@ module systemFSM (
     endcase
   end
 
+  //always_ff block w synch reset
   always_ff @(posedge clock, posedge reset)
     if (reset)
       currState <= WAIT;
@@ -198,14 +204,17 @@ module systemFSM (
 
 endmodule: systemFSM
 
+//Main system datapath
 module mainHardware(
+  //logic for the input
   input logic [1:0] CoinValue, 
   input logic [11:0] Guess,
   input logic GradeIt, clock, reset, StartGame, LoadShapeNow,
   input logic [2:0] LoadShape, 
   input logic [1:0] ShapeLocation,
   input logic CoinInserted,
-
+  
+  //logic for the VGA
   output logic GameWon,
   output logic [3:0] Zood, Znarly,
   output logic [3:0] NumGames, RoundNumber,
@@ -225,9 +234,10 @@ module mainHardware(
   output logic gamedone);
 
 
-
+  //coin wire 
   logic [2:0] coin;
 
+  //turns the 2-bit into the values of each coin
   Mux4to1 #(3) cv_mux (
     .I0(3'd0),
     .I1(3'd1),
@@ -237,56 +247,62 @@ module mainHardware(
     .Y(coin)
   );
 
+  //wires for the adder
   logic [4:0] coin_sum;
   logic [4:0] coin_difference;
   logic [4:0] total_coins;
   logic adder_cout;
 
+  //coin adder
   Adder #(5) coin_adder (.A(total_coins), .B({2'b00, coin}), .cin(1'd0),
                           .cout(adder_cout), .sum(coin_sum));
-
+  
+  //coin subtractor
   Adder #(5) coin_subtractor (.A(total_coins), .B(-5'd4), .cin(1'd0), 
                               .cout(), .sum(coin_difference));
 
   logic [4:0] prereg_total;
-
+  
+  //decides whether we're subtracting or adding
   Mux2to1 #(5) add_sub_mux (
     .I0(coin_difference),
     .I1(coin_sum),
     .S(add_or_sub),
     .Y(prereg_total)
   );
-  
+
+  //stores the total coin amount at one time
   Register #(5) total_coin_register (.clock(clock), .en(tc_en & ~adder_cout), 
                                      .clear(reset), .D(prereg_total),
                                      .Q(total_coins));
 
   // Calculating the NumGames count
-  
   assign NumGames = total_coins[4:2];
 
-
+  //makes sure there is enough games to start a game
   logic enough_games;
 
   MagComp #(4) enough_games_comp (.A(NumGames), .B(4'b0000), 
                                   .AgtB(enough_games), .AltB(), .AeqB());
 
-
+  //fsm logic status point
   assign startgame_real = enough_games & StartGame;
-
+   
+  //checks for if the game was won
   Comparator #(4) win_checker (.A(Znarly), .B(4'b0100), .AeqB(GameWon));
   
   
   
-  
+  //counts the number of rounds
   Counter #(4) round_counter (.clock(clock), .clear(reset | count_cl), .up(1'd1),
                           .load(1'd0), .Q(RoundNumber), .D(), .en(another_round));
 
   
-
+  //checks whether all 8 rounds went through
   Comparator #(4) is_gamedone (.A(RoundNumber), .B(4'b1000), 
                                 .AeqB(gamedone));
 
+  //decodes shape position so you are putting the shape in the correct location
   logic [3:0] shape_pos_en;
   Decoder #(4) position_en (.en(LoadShapeNow), .I(ShapeLocation), 
                             .D(shape_pos_en));
@@ -332,9 +348,10 @@ module mainHardware(
                     (shape3Q[2] | shape3Q[1] | shape3Q[0]) &
                     (shape4Q[2] | shape4Q[1] | shape4Q[0]));
   
-  
+  //makes sure master pattern is what's in the shape registers
   assign MasterPattern = {shape1Q, shape2Q, shape3Q, shape4Q};
-
+  
+  //instant of the grader that pulls from the guess and uses MasterPattern
   Grader_woFSM grader (.Guess, .clock, .reset, .R_en(R_en_grader),
                        .R_clear(R_clear_grader), .GradeIt, .Zood, .Znarly,
                        .MasterPattern(MasterPattern));
