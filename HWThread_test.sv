@@ -28,6 +28,10 @@ module HWThreadTest;
     logic [3:0] NumGames, RoundNumber;
     logic [11:0] MasterPattern;
 
+    logic LoadNumGames, LoadGuess, ClearGame;
+    logic DisplayMasterPattern, LoadZnarlyZood;
+
+
     //FSM
     systemFSM fsm (.*);
     mainHardware hwthread (.*);
