@@ -25,16 +25,8 @@ module ChipInterface (
     output logic [ 2:0] hdmi_tx_p, hdmi_tx_n,
     output logic [15:0] LD
     );
-    
-    
-    //TO DO:
-    // - Include your game here!
-    // - Declare connecting wires/signals to/from your game
-    // - Use those wires/signals to connect to the MastermindVGA and
-    //   EightSevenSegmentDisplays modules below
 
-    //wired connections
-
+    // Instantiating logic for wired connections    
     // Control points
     logic add_or_sub;
     logic cv_cl, cv_en;
@@ -54,7 +46,7 @@ module ChipInterface (
     logic CoinInserted;
     logic count_cl;
 
-    //other pieces
+    // Display connections
     logic [1:0] CoinValue;
     logic [11:0] Guess;
     logic StartGame, LoadShapeNow;
@@ -64,23 +56,19 @@ module ChipInterface (
     logic [3:0] NumGames, RoundNumber;
     logic [11:0] MasterPattern;
 
-    //add these to fsm
-    //!!! DISPLAYMASTERPATTERN SHOWS AFTER EVERY GUESS !!!
-    //!!! WE CAN CHANGE THAT BUT USE IT NOW FOR DEBUGGING!!!
+    // FSM logic variables
     logic LoadNumGames, LoadGuess, ClearGame;
     logic DisplayMasterPattern, LoadZnarlyZood;
 
-    //state Transistions
+    // State transitions
     logic [2:0] outputState;
     logic exitGame;
 
-    //FSM
+    // Instantiating the datapath
     systemFSM fsm (.*);
-    
-
     mainHardware hwthread (.*);
 
-    //connect to input fpga using assign
+    // Connect to input FGPA using assign statements
     assign CoinValue = SW[15:14];
     assign Guess = SW[11:0];
     assign LoadShapeNow = GradeIt;
@@ -91,14 +79,10 @@ module ChipInterface (
     assign LD[15:13] = outputState;
     assign SW[13] = exitGame;
 
-    //Synchronizer
-
+    //Synchronizer instantiations
     Synchronizer syncBTN0 (.async(BTN[0]), .clock, .sync(reset));
-
     Synchronizer syncBTN1 (.async(BTN[1]), .clock, .sync(CoinInserted));
-
     Synchronizer syncBTN2 (.async(BTN[2]), .clock, .sync(StartGame));
-
     Synchronizer syncBTN3 (.async(BTN[3]), .clock, .sync(GradeIt));
 
 /*
