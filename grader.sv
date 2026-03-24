@@ -1,4 +1,4 @@
-`default_nettype none;
+// `default_nettype none;
 
 module Grader
   (input logic [11:0] Guess,
