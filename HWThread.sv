@@ -213,14 +213,13 @@ module mainHardware(
   
   
   
-  logic [3:0] total_rounds;
   
   Counter #(4) round_counter (.clock(clock), .clear(reset), .up(another_round),
-                          .load(1'd0), .Q(total_rounds), .D(), .en());
+                          .load(1'd0), .Q(RoundNumber), .D(), .en());
 
   
 
-  Comparator #(4) is_gamedone (.A(total_rounds), .B(4'b1000), 
+  Comparator #(4) is_gamedone (.A(RoundNumber), .B(4'b1000), 
                                 .AeqB(gamedone));
 
   logic [3:0] shape_pos_en;

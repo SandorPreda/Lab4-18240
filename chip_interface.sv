@@ -25,14 +25,45 @@ module ChipInterface (
     output logic [ 2:0] hdmi_tx_p, hdmi_tx_n,
     output logic [15:0] LD
     );
-
+    
+    
     //TO DO:
     // - Include your game here!
     // - Declare connecting wires/signals to/from your game
     // - Use those wires/signals to connect to the MastermindVGA and
     //   EightSevenSegmentDisplays modules below
 
+    //wired connections
 
+    // Control points
+    logic add_or_sub;
+    logic cv_cl, cv_en;
+    logic tc_en;
+    logic another_round;
+    logic shape_reset;
+    logic R_en_grader, R_clear_grader;
+
+    // Status points
+    logic loaded;
+    logic startgame_real;
+    logic gamedone;
+    logic reset;
+    logic clock;
+    logic GradeIt, GameWon;
+    logic CoinInserted;
+
+    //other pieces
+    logic [1:0] CoinValue;
+    logic [11:0] Guess;
+    logic StartGame, LoadShapeNow;
+    logic [2:0] LoadShape;
+    logic [1:0] ShapeLocation;
+    logic [3:0] Zood, Znarly;
+    logic [3:0] NumGames, RoundNumber;
+    //FSM
+    systemFSM fsm (.*);
+
+    //mainHardware hwthread (.)
 
 /*
  *  BEWARE CHANGING CODE BELOW THIS LINE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -68,22 +99,22 @@ module ChipInterface (
                         .clearGame( ... ),
                         .masterPattern( ... ),
                         .displayMasterPattern( ... ),
-			                  .loadZnarlyZood( ... )
+			.loadZnarlyZood( ... )
                        );
 
 
-    EightSevenSegmentDisplays displays(.HEX7(), //blank
-                                       .HEX6(), //blank
-                                       .HEX5(), // blank
-                                       .HEX4(), // blank
-                                       .HEX3( ... ), // Znarly[3:0]
-                                       .HEX2( ... ), // Zood[3:0]
-                                       .HEX1( ... ), // RoundNumber[3:0]
-                                       .HEX0( ... ), // NumGames[3:0]
+    EightSevenSegmentDisplays displays(.HEX7( ... ), 
+                                       .HEX6( ... ), 
+                                       .HEX5( ... ), 
+                                       .HEX4( ... ),
+                                       .HEX3( ... ), 
+                                       .HEX2( ... ), 
+                                       .HEX1( ... ), 
+                                       .HEX0( ... ),
                                        .CLOCK_100,
-                                       .reset(BTN[0]),
-                                       .dec_points(8'b0000_0000),
-                                       .blank(8'b1111_0000),
+                                       .reset( ... ),
+                                       .dec_points( ... ),
+                                       .blank( ... ),  
                                        .D2_AN,
                                        .D1_AN,
                                        .D2_SEG,
