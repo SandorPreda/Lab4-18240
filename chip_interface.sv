@@ -125,7 +125,7 @@ module ChipInterface (
                         .zood(Zood), 
                         .clearGame(ClearGame),
                         .masterPattern(MasterPattern),
-                        .displayMasterPattern(DisplayMasternPattern),
+                        .displayMasterPattern(DisplayMasterPattern),
 			            .loadZnarlyZood(LoadZnarlyZood)
                        );
 

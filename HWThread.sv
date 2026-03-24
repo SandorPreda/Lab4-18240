@@ -40,7 +40,7 @@ module systemFSM (
     shape_reset = 0;
     R_en_grader = 0;
     R_clear_grader = 0;
-    DisplayMasterPattern = 0;
+    DisplayMasterPattern = 1;
     LoadNumGames = 0;
     LoadGuess = 0;
     ClearGame = 0;
@@ -69,7 +69,7 @@ module systemFSM (
           nextState = ENTERED;
           add_or_sub = 0;
           tc_en = 1;
-          LoadNumGames = 1; // isnt workign rn, fix###########
+          LoadNumGames = 0; // isnt workign rn, fix###########
           shape_reset = 1;
         end
       end
@@ -84,7 +84,7 @@ module systemFSM (
         else begin
            nextState = INSERTED;
            add_or_sub = 1;
-           LoadNumGames = 1;
+           LoadNumGames = 0;
         end
       end
 
@@ -95,6 +95,7 @@ module systemFSM (
           nextState = START;
           R_en_grader = 0;
           R_clear_grader = 1;
+          DisplayMasterPattern = 0;
         end
 
         // Else, stay to load the master pattern
