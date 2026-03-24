@@ -209,8 +209,9 @@ module HWThreadTest;
     @(posedge clock);
     GradeIt <= 1;
     @(posedge clock);
-    GradeIt <= 0;
+    
     @(posedge clock);
+    GradeIt <= 0;
     @(posedge clock);
     @(posedge clock);
     @(posedge clock);
