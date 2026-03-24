@@ -70,30 +70,10 @@ module ChipInterface (
     logic DisplayMasterPattern, LoadZnarlyZood;
 
     //state Transistions
-    logic [2:0] currState;
+    logic [2:0] outputState;
 
     //FSM
-    systemFSM fsm (.add_or_sub, 
-                   .tc_en, 
-                   .another_round,
-                   .shape_reset,
-                   .R_en_grader,
-                   .R_clear_grader,
-                   .count_cl,
-                   .LoadNumGames,
-                   .LoadGuess,
-                   .ClearGame,
-                   .DisplayMasterPattern,
-                   .LoadZnarlyZood,
-                   .loaded,
-                   .startgame_real,
-                   .gamedone,
-                   .reset,
-                   .clock,
-                   .GradeIt,
-                   .GameWon,
-                   .CoinInserted);
-                
+    systemFSM fsm (.*);
     
 
     mainHardware hwthread (.*);
@@ -110,7 +90,7 @@ module ChipInterface (
     assign reset = BTN[0];
     assign clock = CLOCK_100;
     assign LD[0] = GameWon;
-    assign LD[15:13] = currState;
+    assign LD[15:13] = outputState;
 
 /*
  *  BEWARE CHANGING CODE BELOW THIS LINE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
