@@ -7,6 +7,7 @@ module systemFSM (
   output logic another_round,
   output logic shape_reset, 
   output logic R_en_grader, R_clear_grader,
+  output logic count_cl,
 
   //For VGA only
   output logic LoadNumGames, LoadGuess, ClearGame,
@@ -43,12 +44,14 @@ module systemFSM (
     LoadGuess = 0;
     ClearGame = 0;
     LoadZnarlyZood = 0;
+    count_cl = 0;
 
     // FSM control logic
     // Default state: remain in current state
     nextState = currState;
     case (currState)
       WAIT: begin
+        count_cl = 1;
         R_clear_grader = 1;
         // If we insert a coin, store the value of the coin and add it to
         // the total coins register
@@ -165,6 +168,7 @@ module mainHardware(
   input logic GradeIt, clock, reset, StartGame, LoadShapeNow,
   input logic [2:0] LoadShape, 
   input logic [1:0] ShapeLocation,
+
   output logic CoinInserted, GameWon,
   output logic [3:0] Zood, Znarly,
   output logic [3:0] NumGames, RoundNumber,
@@ -176,6 +180,7 @@ module mainHardware(
   input logic another_round,
   input logic shape_reset, 
   input logic R_en_grader, R_clear_grader,
+  input logic count_cl,
 
   //FSM monitor logic
   output logic loaded,
@@ -240,7 +245,7 @@ module mainHardware(
   
   
   
-  Counter #(4) round_counter (.clock(clock), .clear(reset), .up(1'd1),
+  Counter #(4) round_counter (.clock(clock), .clear(reset | count_cl), .up(1'd1),
                           .load(1'd0), .Q(RoundNumber), .D(), .en(another_round));
 
   

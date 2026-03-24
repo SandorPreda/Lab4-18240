@@ -7,6 +7,7 @@ module HWThreadTest;
     logic another_round;
     logic shape_reset;
     logic R_en_grader, R_clear_grader;
+    logic count_cl;
 
     // Status points
     logic loaded;
