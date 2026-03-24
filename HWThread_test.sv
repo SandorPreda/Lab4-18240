@@ -112,8 +112,7 @@ module HWThreadTest;
     @(posedge clock);
     @(posedge clock);
     @(posedge clock);
-    
-    #5 $finish;
+
 
     ShapeLocation <= 2'd1; // Loading the 1st index of the master pattern
     LoadShape <= 3'b100; // D
@@ -153,6 +152,8 @@ module HWThreadTest;
     @(posedge clock);
     @(posedge clock);
     @(posedge clock);
+
+    #5 $finish;
 
     // First Guess: TTTD (1 Zood, 2 Znarly)
     @(posedge clock);
