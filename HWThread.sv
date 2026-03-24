@@ -141,20 +141,18 @@ module systemFSM (
       GRADING: begin
         // Grade the round
         // Loop if remains asserted
-        if (GradeIt) begin
+        if (GameWon) begin
+          nextState = GAME_WON;
+          R_clear_grader = 1;
+          R_en_grader = 0;
+        end
+
+        else if (GradeIt) begin
           nextState = GRADING;
           R_en_grader = 1;
           R_clear_grader = 0;
           LoadZnarlyZood = 1;
           LoadGuess = 1;
-        end
-
-        else if (GameWon) begin
-          nextState = GAME_WON;
-          shape_reset = 1;
-          ClearGame = 1;
-          R_clear_grader = 1;
-          R_en_grader = 0;
         end
 
         else begin
@@ -166,10 +164,11 @@ module systemFSM (
       end
 
       GAME_WON: begin
-        if (GradeIt)
+        if (GradeIt) begin
           nextState = WAIT;
           shape_reset = 1;
           ClearGame = 1;
+        end
         else begin
           gameWonLED = 1;
         end

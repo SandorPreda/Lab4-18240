@@ -31,7 +31,7 @@ module HWThreadTest;
     logic LoadNumGames, LoadGuess, ClearGame;
     logic DisplayMasterPattern, LoadZnarlyZood;
     logic [2:0] outputState;
-
+    logic gameWonLED;
 
     //FSM
     systemFSM fsm (.*);
@@ -203,7 +203,7 @@ module HWThreadTest;
    
     // Third Guess: TTTD (1 Zood, 2 Znarly)
     @(posedge clock);
-    {firstGuess, secondGuess, thirdGuess, fourthGuess} <= {T, T, T, D};
+    {firstGuess, secondGuess, thirdGuess, fourthGuess} <= {T, T, D, O};
     @(posedge clock);
     @(posedge clock);
     @(posedge clock);
@@ -216,8 +216,10 @@ module HWThreadTest;
     @(posedge clock);
     @(posedge clock);
 
+    #5 $finish;
 
     // Fourth Guess: ODTT (4 Zood, 0 Znarly)
+
     @(posedge clock);
     {firstGuess, secondGuess, thirdGuess, fourthGuess} <= {O, D, T, T};
     @(posedge clock);
