@@ -37,7 +37,7 @@ module systemFSM (
     another_round = 0;
     shape_reset = 0;
     R_en_grader = 0;
-    R_clear_grader = 1;
+    R_clear_grader = 0;
     DisplayMasterPattern = 0;
     LoadNumGames = 0;
     LoadGuess = 0;
@@ -49,6 +49,7 @@ module systemFSM (
     nextState = currState;
     case (currState)
       WAIT: begin
+        R_clear_grader = 1;
         // If we insert a coin, store the value of the coin and add it to
         // the total coins register
         if (CoinInserted) begin
@@ -101,6 +102,7 @@ module systemFSM (
           nextState = WAIT;
           shape_reset = 1;
           ClearGame = 1;
+          R_clear_grader = 1;
         end
 
         // If GradeIt is asserted, grade the game
@@ -109,24 +111,34 @@ module systemFSM (
           R_en_grader = 1;
           R_clear_grader = 0;
           LoadGuess = 1;
-          LoadZnarlyZood
+          LoadZnarlyZood = 1;
         end
 
         // Else, wait in this state until GradeIt is asserted
         else begin
           nextState = START;
           R_en_grader = 0;
-          R_clear_grader = 1;
+          R_clear_grader = 0;
           DisplayMasterPattern = 1;
         end
       end
 
       GRADING: begin
-        // ADD COMMENT
-        nextState = START;
-        another_round = 1;
-        R_en_grader = 0;
-        R_clear_grader = 1;
+        // Grade the round
+        if (~GradeIt) begin
+          nextState = START;
+          another_round = 1;
+          R_en_grader = 0;
+          R_clear_grader = 0;
+        end
+
+        // Loop repeatedly until GradeIt is deasserted to avoid grading
+        // the same round multiple times
+        else begin
+          nextState = GRADING;
+          R_en_grader = 0;
+          R_clear_grader = 0;
+        end
       end
     endcase
   end
