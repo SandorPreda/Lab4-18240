@@ -10,6 +10,9 @@ module systemFSM (
   output logic count_cl,
   output logic [2:0] outputState,
 
+  //for led
+  output logic gameWonLED,
+
   //For VGA only
   output logic LoadNumGames, LoadGuess, ClearGame,
   output logic DisplayMasterPattern, LoadZnarlyZood,
@@ -28,7 +31,9 @@ module systemFSM (
     INSERTED = 3'b001,
     ENTERED = 3'b010,
     START = 3'b011,
-    GRADING = 3'b100
+    GRADING = 3'b100,
+    GAME_WON = 3'b101,
+    GAME_LOST = 3'b110
     } currState, nextState;
 
   assign outputState = currState;
@@ -48,6 +53,7 @@ module systemFSM (
     ClearGame = 0;
     LoadZnarlyZood = 0;
     count_cl = 0;
+    gameWonLED = 0;
 
     // FIX: when shapes are being loaded, anzarly and zood shouldnt be displaayed
     // FSM control logic
@@ -105,11 +111,14 @@ module systemFSM (
 
       START: begin
         // If the game is won and done, reset everything
-        if (GameWon | gamedone) begin
-          nextState = WAIT;
-          shape_reset = 1;
-          ClearGame = 1;
+        if (GameWon) begin
+          nextState = GAME_WON;
           R_clear_grader = 1;
+        end
+
+        else if (gamedone) begin
+          R_clear_grader = 1;
+          nextState = GAME_LOST;
         end
 
         // If GradeIt is asserted, grade the game
@@ -154,6 +163,22 @@ module systemFSM (
           R_en_grader = 0;
           R_clear_grader = 1;
         end
+      end
+
+      GAME_WON: begin
+        if (StartGame)
+          nextState = START;
+          shape_reset = 1;
+          ClearGame = 1;
+          gameWonLED = 1; // SHOULD BE OUTPUT?
+      end
+
+      GAME_LOST: begin
+        if (StartGame)
+          nextState = START;
+          shape_reset = 1;
+          ClearGame = 1;
+          gameWonLED = 0; // ####
       end
     endcase
   end
