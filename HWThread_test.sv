@@ -1,42 +1,46 @@
 // `default_nettype none;
 
 module HWThreadTest;
-    // Control points
-    logic add_or_sub;
-    logic tc_en;
-    logic another_round;
-    logic shape_reset;
-    logic R_en_grader, R_clear_grader;
-    logic count_cl;
+  // This module tests and instantiates our datapath with a long simulation of
+  // events that emulate real-life use. This module tests for the correct
+  // behavior of the HWThread in numerous scenarios.
 
-    // Status points
-    logic loaded;
-    logic startgame_real;
-    logic gamedone;
-    logic reset;
-    logic clock;
-    logic GradeIt, GameWon;
-    logic CoinInserted;
-    logic exitGame;
+  // Control points
+  logic add_or_sub;
+  logic tc_en;
+  logic another_round;
+  logic shape_reset;
+  logic R_en_grader, R_clear_grader;
+  logic count_cl;
 
-    // Other pieces
-    logic [1:0] CoinValue;
-    logic [11:0] Guess;
-    logic StartGame, LoadShapeNow;
-    logic [2:0] LoadShape;
-    logic [1:0] ShapeLocation;
-    logic [3:0] Zood, Znarly;
-    logic [3:0] NumGames, RoundNumber;
-    logic [11:0] MasterPattern;
+  // Status points
+  logic loaded;
+  logic startgame_real;
+  logic gamedone;
+  logic reset;
+  logic clock;
+  logic GradeIt, GameWon;
+  logic CoinInserted;
+  logic exitGame;
 
-    logic LoadNumGames, LoadGuess, ClearGame;
-    logic DisplayMasterPattern, LoadZnarlyZood;
-    logic [2:0] outputState;
-    logic gameWonLED;
+  // Other pieces
+  logic [1:0] CoinValue;
+  logic [11:0] Guess;
+  logic StartGame, LoadShapeNow;
+  logic [2:0] LoadShape;
+  logic [1:0] ShapeLocation;
+  logic [3:0] Zood, Znarly;
+  logic [3:0] NumGames, RoundNumber;
+  logic [11:0] MasterPattern;
 
-    //FSM
-    systemFSM fsm (.*);
-    mainHardware hwthread (.*);
+  logic LoadNumGames, LoadGuess, ClearGame;
+  logic DisplayMasterPattern, LoadZnarlyZood;
+  logic [2:0] outputState;
+  logic gameWonLED;
+
+  // Datapath instantiation
+  systemFSM fsm (.*);
+  mainHardware hwthread (.*);
 
   initial begin
     clock = 0;
@@ -66,7 +70,6 @@ module HWThreadTest;
 
     @(posedge clock);
     #5 reset <= 0; // Release Reset
-
     @(posedge clock);
     @(posedge clock);
     @(posedge clock);
@@ -92,7 +95,6 @@ module HWThreadTest;
     @(posedge clock);
     CoinValue <= 2'd0;
     
-
     #5;
     CoinInserted <= 1;
     CoinValue <= 2'd3; // Pentagon (NumGames = 2)
@@ -113,8 +115,6 @@ module HWThreadTest;
     @(posedge clock);
     @(posedge clock);
     
-
-
     // Starting the game... (NumGames = 2)
     StartGame <= 1;
     @(posedge clock);
@@ -128,7 +128,6 @@ module HWThreadTest;
     @(posedge clock);
     @(posedge clock);
     @(posedge clock);
-
 
     ShapeLocation <= 2'd1; // Loading the 1st index of the master pattern
     LoadShape <= 3'b100; // D
@@ -169,8 +168,6 @@ module HWThreadTest;
     @(posedge clock);
     @(posedge clock);
     
-    
-
     // First Guess: TTTD (1 Zood, 2 Znarly)
     @(posedge clock);
     {firstGuess, secondGuess, thirdGuess, fourthGuess} <= {T, T, T, D};
@@ -185,7 +182,6 @@ module HWThreadTest;
     @(posedge clock);
     @(posedge clock);
     @(posedge clock);
-
 
     // Second Guess: ODTT (4 Zood, 0 Znarly)
     @(posedge clock);
@@ -210,7 +206,6 @@ module HWThreadTest;
     @(posedge clock);
     GradeIt <= 1;
     @(posedge clock);
-    
     @(posedge clock);
     GradeIt <= 0;
     @(posedge clock);
@@ -218,10 +213,7 @@ module HWThreadTest;
     @(posedge clock);
     @(posedge clock);
 
-    #5 $finish;
-
     // Fourth Guess: ODTT (4 Zood, 0 Znarly)
-
     @(posedge clock);
     {firstGuess, secondGuess, thirdGuess, fourthGuess} <= {O, D, T, T};
     @(posedge clock);
@@ -250,7 +242,6 @@ module HWThreadTest;
     @(posedge clock);
     @(posedge clock);
     @(posedge clock);
-
 
     // Fourth Guess: ODTT (4 Zood, 0 Znarly)
     @(posedge clock);
@@ -282,7 +273,6 @@ module HWThreadTest;
     @(posedge clock);
     @(posedge clock);
 
-
     // Sixth Guess: ODTT (4 Zood, 0 Znarly)
     @(posedge clock);
     {firstGuess, secondGuess, thirdGuess, fourthGuess} <= {O, D, T, T};
@@ -312,7 +302,6 @@ module HWThreadTest;
     @(posedge clock);
     @(posedge clock);
     @(posedge clock);
-
 
     // Eighth Guess: ODTT (4 Zood, 0 Znarly)
     @(posedge clock);
@@ -359,8 +348,6 @@ module HWThreadTest;
     @(posedge clock);
     @(posedge clock);
 
-    #5 $finish;
-
     // Now return to the initial state
     @(posedge clock);
     @(posedge clock);
@@ -369,7 +356,6 @@ module HWThreadTest;
     @(posedge clock);
     @(posedge clock);
     #20 $finish;
-
   end
 
 endmodule: HWThreadTest
