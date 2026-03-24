@@ -32,7 +32,7 @@ module systemFSM (
   // Sequential logic for state transitions and ouputs
   always_comb begin      
     // Default outputs
-    add_or_sub = 0;
+    add_or_sub = 1;
     tc_en = 0;
     another_round = 0;
     shape_reset = 0;
