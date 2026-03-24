@@ -163,7 +163,7 @@ endmodule: Grader
 
 module Grader_woFSM
   (input logic [11:0] Guess,
-   input logic clock, reset,
+   input logic clock, reset, GradeIt,
    input logic R_en, R_clear,
    input logic [11:0] MasterPattern,
    output logic [3:0] Zood, Znarly);
@@ -268,12 +268,13 @@ module Grader_woFSM
   // Summing Znarly with Adders
   logic [3:0] A1_out, A2_out, A3_out, A4_out,
               A5_out, A6_out, A7_out, A8_out, A9_out;
+  logic [3:0] Znarly_sum, Zood_sum;
   
   Adder #(4) A1(.A({3'd0, C1_final}), .B({3'd0, C5_final}), .cin(1'b0),
                 .sum(A1_out), .cout());
   Adder #(4) A2(.A({3'd0, C9_final}), .B({3'd0, C13_final}), .cin(1'b0),
                 .sum(A2_out), .cout());
-  Adder #(4) A3(.A(A1_out), .B(A2_out), .cin(1'b0), .sum(Znarly), .cout());
+  Adder #(4) A3(.A(A1_out), .B(A2_out), .cin(1'b0), .sum(Znarly_sum), .cout());
 
   // Summing Zood with Adders
   Adder #(4) A4(.A({3'd0, C2_final}), .B({3'd0, C3_final}), .cin(C4_final),
@@ -286,7 +287,10 @@ module Grader_woFSM
                 .sum(A7_out), .cout());
   Adder #(4) A8(.A(A4_out), .B(A5_out), .cin(1'b0), .sum(A8_out), .cout());
   Adder #(4) A9(.A(A6_out), .B(A7_out), .cin(1'b0), .sum(A9_out), .cout());
-  Adder #(4) A10(.A(A8_out), .B(A9_out), .cin(1'b0), .sum(Zood), .cout());
+  Adder #(4) A10(.A(A8_out), .B(A9_out), .cin(1'b0), .sum(Zood_sum), .cout());
+
+  assign Znarly = Znarly_sum & {GradeIt, GradeIt, GradeIt};
+  assign Zood = Zood_sum & {GradeIt, GradeIt, GradeIt};
 
 endmodule: Grader_woFSM
 
