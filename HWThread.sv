@@ -168,8 +168,8 @@ module mainHardware(
 
   Register #(2) cvalueReg (
     .clock(clock),
-    .clear(reset),
-    .en(tc_en),
+    .clear(cv_cl),
+    .en(cv_en),
     .D(CoinValue),
     .Q(cv_reg)
     );
