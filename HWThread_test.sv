@@ -3,7 +3,6 @@
 module HWThreadTest;
     // Control points
     logic add_or_sub;
-    logic cv_cl, cv_en;
     logic tc_en;
     logic another_round;
     logic shape_reset;
@@ -27,6 +26,10 @@ module HWThreadTest;
     logic [3:0] Zood, Znarly;
     logic [3:0] NumGames, RoundNumber;
     logic [11:0] MasterPattern;
+
+    logic LoadNumGames, LoadGuess, ClearGame;
+    logic DisplayMasterPattern, LoadZnarlyZood;
+
 
     //FSM
     systemFSM fsm (.*);
@@ -78,21 +81,24 @@ module HWThreadTest;
 
     // Loading coins in
     CoinValue <= 2'd3; // Pentagon (NumGames = 1)
+    #10;
     @(posedge clock);
     CoinValue <= 2'd0;
 
     #5 CoinValue <= 2'd3; // Pentagon (NumGames = 2)
+    #10;
     @(posedge clock);
     CoinValue <= 2'd0;
 
     #5 CoinValue <= 2'd2; // Triangle (NumGames = 3)
+    #10;
     @(posedge clock);
     CoinValue <= 2'd0;
 
     @(posedge clock);
     @(posedge clock);
     @(posedge clock);
-    #5 $finish;
+    
 
 
     // Starting the game... (NumGames = 2)
@@ -102,9 +108,11 @@ module HWThreadTest;
 
     ShapeLocation <= 2'd0; // Loading the 0th index of the master pattern
     LoadShape <= 3'b011; // O
+    LoadShapeNow <= 1;
     @(posedge clock);
     @(posedge clock);
     @(posedge clock);
+
 
     ShapeLocation <= 2'd1; // Loading the 1st index of the master pattern
     LoadShape <= 3'b100; // D
@@ -144,6 +152,8 @@ module HWThreadTest;
     @(posedge clock);
     @(posedge clock);
     @(posedge clock);
+    
+    #5 $finish;
 
     // First Guess: TTTD (1 Zood, 2 Znarly)
     @(posedge clock);
@@ -159,6 +169,8 @@ module HWThreadTest;
     @(posedge clock);
     @(posedge clock);
     @(posedge clock);
+
+  
 
     // Second Guess: ODTT (4 Zood, 0 Znarly)
     @(posedge clock);

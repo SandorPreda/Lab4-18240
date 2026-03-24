@@ -3,7 +3,6 @@
 module systemFSM (
   // Control points
   output logic add_or_sub,
-  output logic cv_cl, cv_en,
   output logic tc_en,
   output logic another_round,
   output logic shape_reset, 
@@ -33,9 +32,7 @@ module systemFSM (
   // Sequential logic for state transitions and ouputs
   always_comb begin      
     // Default outputs
-    add_or_sub = 0;
-    cv_en = 0;
-    cv_cl = 0;
+    add_or_sub = 1;
     tc_en = 0;
     another_round = 0;
     shape_reset = 0;
@@ -56,7 +53,6 @@ module systemFSM (
         // the total coins register
         if (CoinInserted) begin
           nextState = INSERTED;
-          cv_en = 1;
           add_or_sub = 1;
           tc_en = 1;
         end
@@ -68,6 +64,7 @@ module systemFSM (
           add_or_sub = 0;
           tc_en = 1;
           LoadNumGames = 1;
+          shape_reset = 1;
         end
       end
 
@@ -76,7 +73,6 @@ module systemFSM (
         // double counting (Note: default outputs = nothing is calculated)
         if (~CoinInserted) begin
            nextState = WAIT;
-           cv_cl = 1;
            LoadNumGames = 1;
         end 
         else begin
@@ -101,9 +97,10 @@ module systemFSM (
 
       START: begin
         // If the game is won and done, reset everything
-        if (GameWon && gamedone) begin
+        if (GameWon || gamedone) begin
           nextState = WAIT;
           shape_reset = 1;
+          ClearGame = 1;
         end
 
         // If GradeIt is asserted, grade the game
@@ -111,6 +108,8 @@ module systemFSM (
           nextState = GRADING;
           R_en_grader = 1;
           R_clear_grader = 0;
+          LoadGuess = 1;
+          LoadZnarlyZood
         end
 
         // Else, wait in this state until GradeIt is asserted
@@ -118,6 +117,7 @@ module systemFSM (
           nextState = START;
           R_en_grader = 0;
           R_clear_grader = 1;
+          DisplayMasterPattern = 1;
         end
       end
 
@@ -152,7 +152,6 @@ module mainHardware(
 
   //FSM control logic
   input logic add_or_sub,
-  input logic cv_cl, cv_en,
   input logic tc_en,
   input logic another_round,
   input logic shape_reset, 
@@ -163,16 +162,7 @@ module mainHardware(
   output logic startgame_real,
   output logic gamedone);
 
-  // Coin value register logic
-  logic [1:0] cv_reg;
 
-  Register #(2) cvalueReg (
-    .clock(clock),
-    .clear(cv_cl),
-    .en(cv_en),
-    .D(CoinValue),
-    .Q(cv_reg)
-    );
 
   logic [2:0] coin;
 
@@ -181,7 +171,7 @@ module mainHardware(
     .I1(3'd1),
     .I2(3'd3),
     .I3(3'd5),
-    .S(cv_reg),
+    .S(CoinValue),
     .Y(coin)
   );
 
@@ -210,19 +200,12 @@ module mainHardware(
                                      .Q(total_coins));
 
   // Calculating the NumGames count
-  logic [4:0] shifter_out;
+  
+  assign NumGames = total_coins[4:2];
 
-  BarrelShiftRegister #(5) barrelshifter (.clock(clock), .en(1'd1), .load(1'd1),
-                                          .by(2'b10), .D(total_coins),
-                                          .Q(shifter_out));
-  assign NumGames = shifter_out[3:0];
 
-  logic inserted_async;
+  assign CoinInserted = CoinValue[1] | CoinValue[0];
 
-  assign inserted_async = CoinValue[1] | CoinValue[0];
-
-  Synchronizer insert_synchronizer (.clock(clock), .async(inserted_async),
-                                    .sync(CoinInserted));
 
   logic enough_games;
 
