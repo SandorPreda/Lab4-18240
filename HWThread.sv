@@ -185,7 +185,7 @@ module systemFSM (
         end
         else begin
           ClearGame = 1;
-
+        end
     endcase
   end
 
