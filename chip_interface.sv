@@ -62,9 +62,49 @@ module ChipInterface (
     logic [3:0] NumGames, RoundNumber;
     logic [11:0] MasterPattern;
 
+    //add these to fsm
+    //!!! DISPLAYMASTERPATTERN SHOWS AFTER EVERY GUESS !!!
+    //!!! WE CAN CHANGE THAT BUT USE IT NOW FOR DEBUGGING!!!
+    logic LoadNumGames, LoadGuess, ClearGame;
+    logic DisplayMasterPattern, LoadZnarlyZood;
+
     //FSM
-    systemFSM fsm (.*);
+    systemFSM fsm (.add_or_sub, 
+                   .tc_en, 
+                   .another_round,
+                   .shape_reset,
+                   .R_en_grader,
+                   .R_clear_grader,
+                   .count_cl,
+                   .LoadNumGames,
+                   .LoadGuess,
+                   .ClearGame,
+                   .DisplayMasterPattern,
+                   .LoadZnarlyZood,
+                   .loaded,
+                   .startgame_real,
+                   .gamedone,
+                   .reset,
+                   .clock,
+                   .GradeIt,
+                   .GameWon,
+                   .CoinInserted);
+                
+    
+
     mainHardware hwthread (.*);
+
+    //connect to input fpga using assign
+    assign CoinValue = SW[15:14];
+    assign CoinInserted = BTN[1];
+    assign StartGame = BTN[2];
+    assign Guess = SW[11:0];
+    assign GradeIt = BTN[3];
+    assign LoadShape = SW[2:0];
+    assign ShapeLocation = SW[4:3];
+    assign LoadShapeNow = BTN[3];
+    assign reset = BTN[0];
+    assign clock = CLOCK_100;
 
 /*
  *  BEWARE CHANGING CODE BELOW THIS LINE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -91,38 +131,38 @@ module ChipInterface (
                         .VGA_HS,
                         .reset(reset_sync),
                         .numGames(NumGames),
-                        .loadNumGames( ... ),
+                        .loadNumGames(LoadNumGames),
                         .roundNumber(RoundNumber),
                         .guess(Guess),
-                        .loadGuess( ... ),
+                        .loadGuess(LoadGuess),
                         .znarly(Znarly), 
                         .zood(Zood), 
-                        .clearGame( ... ),
+                        .clearGame(ClearGame),
                         .masterPattern(MasterPattern),
-                        .displayMasterPattern( ... ),
-			.loadZnarlyZood( ... )
+                        .displayMasterPattern(DisplayMasternPattern),
+			            .loadZnarlyZood(LoadZnarlyZood)
                        );
 
 
-    EightSevenSegmentDisplays displays(.HEX7( ... ), 
-                                       .HEX6( ... ), 
-                                       .HEX5( ... ), 
-                                       .HEX4( ... ),
-                                       .HEX3( ... ), 
-                                       .HEX2( ... ), 
-                                       .HEX1( ... ), 
-                                       .HEX0( ... ),
+    EightSevenSegmentDisplays displays(.HEX7(), 
+                                       .HEX6(), 
+                                       .HEX5(), 
+                                       .HEX4(),
+                                       .HEX3(Znarly), 
+                                       .HEX2(Zood), 
+                                       .HEX1(RoundNumber), 
+                                       .HEX0(NumGames),
                                        .CLOCK_100,
-                                       .reset( ... ),
-                                       .dec_points( ... ),
-                                       .blank( ... ),  
+                                       .reset(reset),
+                                       .dec_points(8'b0),
+                                       .blank(8'b11110000),  
                                        .D2_AN,
                                        .D1_AN,
                                        .D2_SEG,
                                        .D1_SEG
                                       );
 
-    Synchronizer sync_reset(.async( ... ), 
+    Synchronizer sync_reset(.async(reset), 
                             .clock(clk_40MHz), 
                             .sync(reset_sync)
                            );

@@ -168,8 +168,9 @@ module mainHardware(
   input logic GradeIt, clock, reset, StartGame, LoadShapeNow,
   input logic [2:0] LoadShape, 
   input logic [1:0] ShapeLocation,
+  input logic CoinInserted,
 
-  output logic CoinInserted, GameWon,
+  output logic GameWon,
   output logic [3:0] Zood, Znarly,
   output logic [3:0] NumGames, RoundNumber,
   output logic [11:0] MasterPattern,
@@ -227,9 +228,6 @@ module mainHardware(
   // Calculating the NumGames count
   
   assign NumGames = total_coins[4:2];
-
-
-  assign CoinInserted = CoinValue[1] | CoinValue[0];
 
 
   logic enough_games;

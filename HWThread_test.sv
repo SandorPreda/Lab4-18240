@@ -81,18 +81,29 @@ module HWThreadTest;
     @(posedge clock);
 
     // Loading coins in
+    CoinInserted <= 1;
     CoinValue <= 2'd3; // Pentagon (NumGames = 1)
     #10;
     @(posedge clock);
+    CoinInserted <= 0;
+    @(posedge clock);
+    @(posedge clock);
     CoinValue <= 2'd0;
+    
 
-    #5 CoinValue <= 2'd3; // Pentagon (NumGames = 2)
+    #5;
+    CoinInserted <= 1;
+    CoinValue <= 2'd3; // Pentagon (NumGames = 2)
     #10;
+    CoinInserted <= 0;
     @(posedge clock);
     CoinValue <= 2'd0;
 
-    #5 CoinValue <= 2'd2; // Triangle (NumGames = 3)
+    #5;
+    CoinInserted <= 1;
+    CoinValue <= 2'd2; // Triangle (NumGames = 3)
     #10;
+    CoinInserted <= 0;
     @(posedge clock);
     CoinValue <= 2'd0;
 
