@@ -179,11 +179,12 @@ module mainHardware(
 
   logic [4:0] prereg_total;
 
-
-
-  MultibitMultiplexer #(.BITWIDTH(5), .OPTIONS(2)) 
-                      add_sub_mux (.I({coin_sum, coin_difference}), 
-                                    .S(add_or_sub), .Y(prereg_total));
+  Mux2to1 #(5) add_sub_mux (
+    .I0(coin_difference),
+    .I1(coin_sum),
+    .S(add_or_sub),
+    .Y(prereg_total)
+  );
   
   Register #(5) total_coin_register (.clock(CLOCK100), .en(tc_en & ~adder_cout), 
                                      .clear(reset), .D(prereg_total),
