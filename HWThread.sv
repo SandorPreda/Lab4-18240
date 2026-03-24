@@ -8,7 +8,7 @@ module systemFSM (
   output logic shape_reset, 
   output logic R_en_grader, R_clear_grader,
   output logic count_cl,
-  output logic currState,
+  output logic [2:0] outputState,
 
   //For VGA only
   output logic LoadNumGames, LoadGuess, ClearGame,
@@ -22,6 +22,8 @@ module systemFSM (
   input logic clock,
   input logic GradeIt, GameWon,
   input logic CoinInserted);
+
+  assign outputSpace = currState;
 
   enum logic [2:0] {
     WAIT = 3'b000,
