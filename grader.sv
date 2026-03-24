@@ -2,7 +2,7 @@
 
 module Grader
   (input logic [11:0] Guess,
-   input logic GradeIt, CLOCK100, reset,
+   input logic GradeIt, clock, reset,
    output logic [3:0] Zood, Znarly);
 
   logic [11:0] MasterPattern;
@@ -35,19 +35,19 @@ module Grader
   assign MasterPattern = {firstShape, secondShape, thirdShape, fourthShape}; 
 
   // Instantiate registers and register logic
-  logic [2:0] R1_out, R2_out, R3_out, R4_outgt;
+  logic [2:0] R1_out, R2_out, R3_out, R4_out;
   logic R_en, R_clear;
 
-  Register #(3) R1(.clock(CLOCK100), .D(firstGuess), .Q(R1_out), .en(R_en),
+  Register #(3) R1(.clock(clock), .D(firstGuess), .Q(R1_out), .en(R_en),
                    .clear(R_clear));
 
-  Register #(3) R2(.clock(CLOCK100), .D(secondGuess), .Q(R2_out), .en(R_en),
+  Register #(3) R2(.clock(clock), .D(secondGuess), .Q(R2_out), .en(R_en),
                    .clear(R_clear));
 
-  Register #(3) R3(.clock(CLOCK100), .D(thirdGuess), .Q(R3_out), .en(R_en),
+  Register #(3) R3(.clock(clock), .D(thirdGuess), .Q(R3_out), .en(R_en),
                    .clear(R_clear));
 
-  Register #(3) R4(.clock(CLOCK100), .D(fourthGuess), .Q(R4_out), .en(R_en),
+  Register #(3) R4(.clock(clock), .D(fourthGuess), .Q(R4_out), .en(R_en),
                    .clear(R_clear));
 
   // Instantiate comparators and comparator logic
@@ -153,7 +153,7 @@ module Grader
     endcase
   end
 
-  always_ff @(posedge CLOCK100, posedge reset)
+  always_ff @(posedge clock, posedge reset)
     if (reset)
       currState = START;
     else
@@ -163,12 +163,11 @@ endmodule: Grader
 
 module Grader_woFSM
   (input logic [11:0] Guess,
-   input logic CLOCK100, reset,
+   input logic clock, reset,
    input logic R_en, R_clear,
    input logic [11:0] MasterPattern,
    output logic [3:0] Zood, Znarly);
 
-  logic [11:0] MasterPattern;
   logic [2:0] firstGuess, secondGuess, thirdGuess, fourthGuess;
 
   assign firstGuess  = Guess[11:9];
@@ -190,23 +189,25 @@ module Grader_woFSM
     COMPUTE = 1
   } currState, nextState;
 
-  // Assign the master to each shape
-  assign {firstShape, secondShape, thirdShape, fourthShape} = MasterPattern; 
+  assign firstShape = MasterPattern[11:9];
+  assign secondShape = MasterPattern[8:6];
+  assign thirdShape = MasterPattern[5:3];
+  assign fourthShape = MasterPattern[2:0];
+
 
   // Instantiate registers and register logic
-  logic [2:0] R1_out, R2_out, R3_out, R4_outgt;
-  logic R_en, R_clear;
+  logic [2:0] R1_out, R2_out, R3_out, R4_out;
 
-  Register #(3) R1(.clock(CLOCK100), .D(firstGuess), .Q(R1_out), .en(R_en),
+  Register #(3) R1(.clock(clock), .D(firstGuess), .Q(R1_out), .en(R_en),
                    .clear(R_clear));
 
-  Register #(3) R2(.clock(CLOCK100), .D(secondGuess), .Q(R2_out), .en(R_en),
+  Register #(3) R2(.clock(clock), .D(secondGuess), .Q(R2_out), .en(R_en),
                    .clear(R_clear));
 
-  Register #(3) R3(.clock(CLOCK100), .D(thirdGuess), .Q(R3_out), .en(R_en),
+  Register #(3) R3(.clock(clock), .D(thirdGuess), .Q(R3_out), .en(R_en),
                    .clear(R_clear));
 
-  Register #(3) R4(.clock(CLOCK100), .D(fourthGuess), .Q(R4_out), .en(R_en),
+  Register #(3) R4(.clock(clock), .D(fourthGuess), .Q(R4_out), .en(R_en),
                    .clear(R_clear));
 
   // Instantiate comparators and comparator logic
@@ -301,7 +302,7 @@ module GraderTest;
   logic [11:0] Guess;
   logic GradeIt, reset;
   logic [3:0] Znarly, Zood;
-  // logic CLOCK100;
+  // logic clock;
 
   logic clock;
   initial begin
@@ -320,7 +321,7 @@ module GraderTest;
 
   assign Guess = {firstShape, secondShape, thirdShape, fourthShape};
 
-  Grader DUT(.CLOCK100(clock), .*);
+  Grader DUT(.clock(clock), .*);
 
   initial begin
     $monitor($time,, "reset=%b|Zood=%d|Znarly=%d",
