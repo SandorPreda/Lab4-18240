@@ -60,10 +60,12 @@ module ChipInterface (
     logic [1:0] ShapeLocation;
     logic [3:0] Zood, Znarly;
     logic [3:0] NumGames, RoundNumber;
+    logic [11:0] MasterPattern;
+
     //FSM
     systemFSM fsm (.*);
 
-    //mainHardware hwthread (.)
+    mainHardware hwthread (.*);
 
 /*
  *  BEWARE CHANGING CODE BELOW THIS LINE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -89,15 +91,15 @@ module ChipInterface (
                         .VGA_VS,
                         .VGA_HS,
                         .reset(reset_sync),
-                        .numGames( ... ),
+                        .numGames(NumGames),
                         .loadNumGames( ... ),
-                        .roundNumber( ... ),
-                        .guess( ... ),
+                        .roundNumber(RoundNumber),
+                        .guess(Guess),
                         .loadGuess( ... ),
-                        .znarly( ... ), 
-                        .zood( ... ), 
+                        .znarly(Znarly), 
+                        .zood(Zood), 
                         .clearGame( ... ),
-                        .masterPattern( ... ),
+                        .masterPattern(MasterPattern),
                         .displayMasterPattern( ... ),
 			.loadZnarlyZood( ... )
                        );
