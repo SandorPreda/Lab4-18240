@@ -130,6 +130,7 @@ module mainHardware(
   output logic CoinInserted, GameWon,
   output logic [3:0] Zood, Znarly,
   output logic [3:0] NumGames, RoundNumber,
+  output logic [11:0] MasterPattern,
 
   //FSM control logic
   input logic add_or_sub,
@@ -272,9 +273,10 @@ module mainHardware(
                     (shape4Q[2] | shape4Q[1] | shape4Q[0]));
   
   
+  assign MasterPattern = {shape1Q, shape2Q, shape3Q, shape4Q};
 
   Grader_woFSM grader (.Guess, .CLOCK100, .reset, .R_en(R_en_grader),
                        .R_clear(R_clear_grader), .Zood, .Znarly,
-                       .MasterPattern({shape1Q, shape2Q, shape3Q, shape4Q}));
+                       .MasterPattern(MasterPattern));
 
 endmodule: mainHardware
