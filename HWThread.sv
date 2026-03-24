@@ -97,9 +97,10 @@ module systemFSM (
 
       START: begin
         // If the game is won and done, reset everything
-        if (GameWon && gamedone) begin
+        if (GameWon || gamedone) begin
           nextState = WAIT;
           shape_reset = 1;
+          ClearGame = 1;
         end
 
         // If GradeIt is asserted, grade the game
@@ -107,6 +108,8 @@ module systemFSM (
           nextState = GRADING;
           R_en_grader = 1;
           R_clear_grader = 0;
+          LoadGuess = 1;
+          LoadZnarlyZood
         end
 
         // Else, wait in this state until GradeIt is asserted
@@ -114,6 +117,7 @@ module systemFSM (
           nextState = START;
           R_en_grader = 0;
           R_clear_grader = 1;
+          DisplayMasterPattern = 1;
         end
       end
 
