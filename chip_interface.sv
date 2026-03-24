@@ -64,7 +64,6 @@ module ChipInterface (
 
     //FSM
     systemFSM fsm (.*);
-
     mainHardware hwthread (.*);
 
 /*

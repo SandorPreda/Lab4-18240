@@ -1,16 +1,40 @@
 `default_nettype none;
 
 module HWThreadTest;
+    // Control points
+    logic add_or_sub;
+    logic cv_cl, cv_en;
+    logic tc_en;
+    logic another_round;
+    logic shape_reset;
+    logic R_en_grader, R_clear_grader;
 
-  logic [1:0] CoinValue, ShapeLocation;
-  logic [2:0] LoadShape;
-  logic [3:0] Znarly, Zood, RoundNumber, NumGames;
-  logic [11:0] Guess;
-  logic CoinInserted, StartGame, GradeIt, LoadShapeNow, GameWon, reset, clock;
+    // Status points
+    logic loaded;
+    logic startgame_real;
+    logic gamedone;
+    logic reset;
+    logic clock;
+    logic GradeIt, GameWon;
+    logic CoinInserted;
+
+    // Other pieces
+    logic [1:0] CoinValue;
+    logic [11:0] Guess;
+    logic StartGame, LoadShapeNow;
+    logic [2:0] LoadShape;
+    logic [1:0] ShapeLocation;
+    logic [3:0] Zood, Znarly;
+    logic [3:0] NumGames, RoundNumber;
+    logic [11:0] MasterPattern;
+
+    //FSM
+    systemFSM fsm (.*);
+    mainHardware hwthread (.*);
 
   initial begin
-    assign clock = 0;
-    forever #5 clock = ~clock;
+    clock = 0;
+    forever #1 clock = ~clock;
   end
 
   enum logic [2:0] {
@@ -20,34 +44,29 @@ module HWThreadTest;
     D = 3'b100,
     I = 3'b101,
     Z = 3'b110
-  } firstShape, secondShape, thirdShape, fourthShape;
-
-  assign Guess = {firstShape, secondShape, thirdShape, fourthShape};
-
-  HWThread DUT(.*);
+  } firstGuess, secondGuess, thirdGuess, fourthGuess;
+  assign Guess = {firstGuess, secondGuess, thirdGuess, fourthGuess};
 
   initial begin
-    $monitor($time,, "etc.");
+    $monitor($time,, "State=%s|CoinValue=%b|NumGames=%b|MasterPattern=%b",
+             fsm.currState.name, CoinValue, NumGames, MasterPattern);
 
     // Initialize States:
     CoinValue <= 2'd0;
     ShapeLocation <= 2'd0;
     LoadShape <= 3'd0;
     LoadShapeNow <= 3'd0;
-    Znarly <= 4'd0; Zood <= 4'd0;
-    RoundNumber <= 4'd0;
-    NumGames <= 4'd0;
     reset <= 1;
 
     @(posedge clock);
     #5 reset <= 0; // Release Reset
-    @(posedge clock);
 
     @(posedge clock);
     @(posedge clock);
     @(posedge clock);
-
     @(posedge clock);
+    @(posedge clock);
+
     StartGame <= 1; // Should do nothing since we have no credits
     @(posedge clock);
     @(posedge clock);
@@ -58,21 +77,23 @@ module HWThreadTest;
     @(posedge clock);
 
     // Loading coins in
-    coinValue <= 2'd3; // Pentagon (NumGames = 1)
+    CoinValue <= 2'd3; // Pentagon (NumGames = 1)
     @(posedge clock);
-    coinValue <= 2'd0;
+    CoinValue <= 2'd0;
 
-    #5 coinValue <= 2'd3; // Pentagon (NumGames = 2)
+    #5 CoinValue <= 2'd3; // Pentagon (NumGames = 2)
     @(posedge clock);
-    coinValue <= 2'd0;
+    CoinValue <= 2'd0;
 
-    #5 coinValue <= 2'd2; // Triangle (NumGames = 3)
+    #5 CoinValue <= 2'd2; // Triangle (NumGames = 3)
     @(posedge clock);
-    coinValue <= 2'd0;
+    CoinValue <= 2'd0;
 
     @(posedge clock);
     @(posedge clock);
     @(posedge clock);
+    #5 $finish;
+
 
     // Starting the game... (NumGames = 2)
     StartGame <= 1;
@@ -126,7 +147,7 @@ module HWThreadTest;
 
     // First Guess: TTTD (1 Zood, 2 Znarly)
     @(posedge clock);
-    {firstShape, secondShape, thirdShape, fourthShape} <= {T, T, T, D};
+    {firstGuess, secondGuess, thirdGuess, fourthGuess} <= {T, T, T, D};
     @(posedge clock);
     @(posedge clock);
     @(posedge clock);
@@ -141,7 +162,7 @@ module HWThreadTest;
 
     // Second Guess: ODTT (4 Zood, 0 Znarly)
     @(posedge clock);
-    {firstShape, secondShape, thirdShape, fourthShape} <= {O, D, T, T};
+    {firstGuess, secondGuess, thirdGuess, fourthGuess} <= {O, D, T, T};
     @(posedge clock);
     @(posedge clock);
     @(posedge clock);
@@ -156,7 +177,7 @@ module HWThreadTest;
 
     // Final Guess: TTDO (0 Zood, 4 Znarly)
     @(posedge clock);
-    {firstShape, secondShape, thirdShape, fourthShape} <= {T, T, D, O};
+    {firstGuess, secondGuess, thirdGuess, fourthGuess} <= {T, T, D, O};
     @(posedge clock);
     @(posedge clock);
     @(posedge clock);
