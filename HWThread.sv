@@ -10,8 +10,8 @@ module systemFSM (
   output logic R_en_grader, R_clear_grader,
 
   //For VGA only
-  output logic LoadNumGames, LoadGuess, ClearGame;
-  output logic DisplayMasterPattern, LoadZnarlyZood;
+  output logic LoadNumGames, LoadGuess, ClearGame,
+  output logic DisplayMasterPattern, LoadZnarlyZood,
 
   // Status points
   input logic loaded,
